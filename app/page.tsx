@@ -31,7 +31,7 @@ export default function Home() {
         </p>
         <p className="mt-6 text-lg text-neutral-700">
           {site.percent} of the scoreboard. {site.score.filled} of{" "}
-          {site.score.total} cells. Yes at 80%.
+          {site.score.total}. Partial counts as 0.5. Yes at 80%.
         </p>
         <div
           className="mt-4 h-3 w-full border border-neutral-900"
@@ -40,9 +40,9 @@ export default function Home() {
           <div className="h-full bg-neutral-900" style={{ width: barWidth }} />
         </div>
         <p className="mt-8 text-base text-neutral-700">
-          Codex, Cursor, Claude Code, Grok, and OpenCode against the features
-          that make MCP usable in production. Partial is opt-in, a subset, or
-          experimental. Cells link to docs or source.
+          Codex, Cursor, Claude Code, Grok, and OpenCode against these MCP
+          features. Partial is opt-in, a subset, or experimental. Cells link to
+          docs or source.
         </p>
       </header>
 
@@ -97,6 +97,9 @@ export default function Home() {
                         ) : (
                           label
                         )}
+                        {cell.notes ? (
+                          <p className="mt-1 text-neutral-600">{cell.notes}</p>
+                        ) : null}
                       </td>
                     );
                   })}
