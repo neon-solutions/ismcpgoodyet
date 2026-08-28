@@ -51,7 +51,7 @@ export const features = [
     name: "Elicitation",
     kind: "spec",
     summary:
-      "A server can pause a tool call and ask the user for a form or an out-of-band URL, then retry without a held-open stream.",
+      "A server can pause a tool call and ask the user for a form or an out-of-band URL.",
     specUrl:
       "https://modelcontextprotocol.io/specification/2026-07-28/client/elicitation",
     shippedAt: "2025-11-25",
@@ -166,7 +166,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://developers.openai.com/codex/app-server",
       notes:
-        "elicitation/create surfaces as mcpServer/elicitation/request. Form, URL, and openai/form. MRTR is tied to opt-in 2026-07-28.",
+        "elicitation/create surfaces as mcpServer/elicitation/request. Form, URL, and openai/form. Opt-in 2026-07-28 MRTR InputRequiredResult currently errors (issue 40657).",
     },
     cursor: {
       status: "partial",
@@ -197,9 +197,9 @@ export const status = {
   tasks: {
     codex: {
       status: "no",
-      evidenceUrl:
-        "https://github.com/openai/codex/blob/main/codex-rs/mcp-server/src/message_processor.rs",
-      notes: "No client Tasks extension. Codex-as-server returns unsupported for tasks/get.",
+      evidenceUrl: "https://developers.openai.com/codex/mcp",
+      notes:
+        "Codex MCP docs cover stdio, Streamable HTTP, tools, OAuth, and approval_mode. No Tasks extension, tasks/get, or io.modelcontextprotocol/tasks.",
     },
     cursor: {
       status: "no",
@@ -215,9 +215,10 @@ export const status = {
     },
     grok: {
       status: "no",
-      evidenceUrl: "https://docs.x.ai/build/features/background-tasks",
+      evidenceUrl:
+        "https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-mcp/src/servers.rs",
       notes:
-        "Grok Build background tasks are process/subagent jobs, not io.modelcontextprotocol/tasks.",
+        "Client capabilities advertise elicitation and MCP UI mime types. No io.modelcontextprotocol/tasks. Grok's own background jobs are unrelated.",
     },
     opencode: {
       status: "no",
@@ -241,9 +242,9 @@ export const status = {
     },
     "claude-code": {
       status: "no",
-      evidenceUrl: "https://www.anthropic.com/engineering/code-execution-with-mcp",
+      evidenceUrl: "https://code.claude.com/docs/en/mcp",
       notes:
-        "Anthropic documented the pattern for agent builders. Claude Code has Tool Search, not a native MCP-as-code execute surface. API PTC excludes MCP connector tools.",
+        "Claude Code connects MCP servers and calls their tools (Tool Search when the catalog is large). No native execute-code-against-MCP surface. The Anthropic code-execution article is a builder pattern, not a Claude Code feature.",
     },
     grok: {
       status: "no",
@@ -319,11 +320,10 @@ export const status = {
         "enabled on the server, grok mcp enable|disable, TUI /mcps Space toggle. MCPTool allow/deny rules. Per-tool registration in ToolBridge.",
     },
     opencode: {
-      status: "partial",
-      evidenceUrl:
-        "https://github.com/anomalyco/opencode/blob/dev/packages/web/src/content/docs/mcp-servers.mdx",
+      status: "yes",
+      evidenceUrl: "https://opencode.ai/docs/mcp-servers",
       notes:
-        "mcp.<name>.enabled plus permission rules on prefixed tool ids. No first-class per-tool MCP UI.",
+        "mcp.<name>.enabled disables a server without deleting it. Permission rules can deny a prefixed MCP tool id.",
     },
   },
   "list-pagination": {
@@ -362,9 +362,10 @@ export const status = {
   "mcp-apps": {
     codex: {
       status: "partial",
-      evidenceUrl: "https://github.com/openai/codex/pull/19884",
+      evidenceUrl:
+        "https://github.com/openai/codex/blob/main/codex-rs/app-server/README.md",
       notes:
-        "enable_mcp_apps, off by default, under development. Advertises io.modelcontextprotocol/ui. Desktop rendering still has open failures.",
+        "App-server advertises io.modelcontextprotocol/ui with text/html;profile=mcp-app and mcpAppResourceUri on tool calls. enable_mcp_apps is off by default.",
     },
     cursor: {
       status: "yes",
@@ -452,11 +453,10 @@ export const status = {
         "Ask (default), Auto classifier, Always-approve. MCPTool allow/deny. deny and PreToolUse still apply under always-approve.",
     },
     opencode: {
-      status: "partial",
-      evidenceUrl:
-        "https://github.com/anomalyco/opencode/blob/dev/packages/web/src/content/docs/permissions.mdx",
+      status: "yes",
+      evidenceUrl: "https://opencode.ai/docs/permissions",
       notes:
-        "Generic permission allow/ask/deny on prefixed MCP tool ids. No MCP annotation-aware policy.",
+        "allow, ask, deny, plus --auto for anything not denied. MCP tools use the same permission keys as their prefixed ids. No annotation-aware MCP policy.",
     },
   },
 } satisfies Record<FeatureId, Record<ClientId, Cell>>;
