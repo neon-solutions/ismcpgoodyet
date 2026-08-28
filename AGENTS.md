@@ -14,6 +14,8 @@ Site for [ismcpgoodyet.com](https://ismcpgoodyet.com): MCP client scoreboard plu
 
 Content is `content/site.ts`. The homepage is the product.
 
+Ships from `main`. Push `main` and Vercel deploys. No feature branches or PRs.
+
 Bun for install and scripts. Next.js App Router. Tailwind. White background, headings, no animations, no pills.
 
 ```bash
