@@ -41,8 +41,8 @@ export default function Home() {
         </div>
         <p className="mt-8 text-base text-neutral-700">
           Codex, Cursor, Claude Code, Grok, and OpenCode against the features
-          that make MCP usable in production. Draft: cells are a first pass,
-          not a verified audit.
+          that make MCP usable in production. Partial is opt-in, a subset, or
+          experimental. Cells link to docs or source.
         </p>
       </header>
 
@@ -147,8 +147,7 @@ export default function Home() {
       </section>
 
       <footer className="mt-20 border-t border-neutral-200 pt-6 text-sm text-neutral-600">
-        ismcpgoodyet.com. Draft. Statuses need citations before this is
-        anything other than a layout.
+        ismcpgoodyet.com. Not official Neon. Cells cite public docs or source.
       </footer>
     </div>
   );
