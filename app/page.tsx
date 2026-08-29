@@ -30,8 +30,7 @@ export default function Home() {
           {site.good ? "Yes" : "No"}
         </p>
         <p className="mt-6 text-lg text-neutral-700">
-          {site.percent} of the scoreboard. {site.score.filled} of{" "}
-          {site.score.total}. Partial counts as 0.5. Yes at 80%.
+          {site.percent} of the scoreboard.
         </p>
         <div
           className="mt-4 h-3 w-full border border-neutral-900"
