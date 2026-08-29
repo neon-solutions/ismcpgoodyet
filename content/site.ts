@@ -70,7 +70,7 @@ export const features = [
     name: "Code mode",
     kind: "client-pattern",
     summary:
-      "The model writes code against MCP tools instead of stuffing every schema and intermediate result into context.",
+      "The model writes code that calls MCP tools. Intermediate results stay out of the prompt.",
     specUrl: "https://www.anthropic.com/engineering/code-execution-with-mcp",
     shippedAt: "2025-11-04",
   },
@@ -110,6 +110,16 @@ export const features = [
     shippedAt: "2026-01-26",
   },
   {
+    id: "skills-over-mcp",
+    name: "Skills over MCP",
+    kind: "spec",
+    summary:
+      "An MCP server serves Agent Skills (SKILL.md directories) as skill:// resources. The client lists them with skills/list and reads them.",
+    specUrl:
+      "https://modelcontextprotocol.io/community/working-groups/skills-over-mcp",
+    shippedAt: "2026-04-16",
+  },
+  {
     id: "oauth",
     name: "In-client OAuth",
     kind: "spec",
@@ -122,7 +132,7 @@ export const features = [
     name: "Approval policy",
     kind: "client-pattern",
     summary:
-      "Something between prompt-every-call and yolo: allowlists, classifiers, or annotation-aware auto-run.",
+      "Allowlists, classifiers, or annotation-aware auto-run.",
     shippedAt: "2025-06-01",
   },
 ] satisfies readonly Feature[];
@@ -392,6 +402,39 @@ export const status = {
       notes: "Open request. No Apps host in core.",
     },
   },
+  "skills-over-mcp": {
+    codex: {
+      status: "partial",
+      evidenceUrl:
+        "https://developers.openai.com/plugins/build/mcp-server#import-skills-from-the-mcp-server",
+      notes:
+        "Plugin Scan Tools imports a bounded SEP-2640 snapshot (skills/list, skills/get, skill://) at submission. Codex CLI still loads SKILL.md from disk and can install MCP tools a skill depends on. No live skills/list against a connected MCP server.",
+    },
+    cursor: {
+      status: "no",
+      evidenceUrl: "https://cursor.com/docs/mcp",
+      notes:
+        "Support table is Tools, Prompts, Resources, Roots, Elicitation, Apps. Skills load from .cursor/skills, .agents/skills, and plugins. No skills/list or io.modelcontextprotocol/skills.",
+    },
+    "claude-code": {
+      status: "no",
+      evidenceUrl: "https://code.claude.com/docs/en/skills",
+      notes:
+        "Skills load from the filesystem and plugins. MCP resources are attachments, not a skills catalog. SEP-2640 notes an internal prototype that is not public.",
+    },
+    grok: {
+      status: "no",
+      evidenceUrl: "https://docs.x.ai/build/features/mcp-servers",
+      notes:
+        "MCP docs cover tools, OAuth, and approvals. No skills/list, skill://, or io.modelcontextprotocol/skills. docs.x.ai/build/features/skills is 404.",
+    },
+    opencode: {
+      status: "no",
+      evidenceUrl: "https://opencode.ai/docs/skills",
+      notes:
+        "Skills load from .opencode/skills, .claude/skills, and .agents/skills. The skill tool reads SKILL.md from disk. No skills/list or io.modelcontextprotocol/skills in core.",
+    },
+  },
   oauth: {
     codex: {
       status: "yes",
@@ -483,6 +526,11 @@ export const timeline = [
     href: "https://modelcontextprotocol.io/extensions/apps/overview",
   },
   {
+    date: "2026-04-16",
+    title: "Skills Over MCP working group",
+    href: "https://modelcontextprotocol.io/community/working-groups/skills-over-mcp",
+  },
+  {
     date: "2026-05-19",
     title: "WebMCP at Chrome I/O",
     href: "https://developer.chrome.com/blog/chrome-at-io26",
@@ -502,12 +550,13 @@ export const timeline = [
 export const news = [
   {
     slug: "mcp-roadmap-2026-08",
-    title: "After the stateless spec, MCP wants push, identity, and progressive discovery",
+    title:
+      "MCP roadmap: agentic messaging, HTTP-over-stdio, DPoP, progressive discovery",
     publishedAt: "2026-08-22",
     sourceName: "MCP docs",
     sourceUrl: "https://modelcontextprotocol.io/development/roadmap",
     summary:
-      "The 2026-08-22 roadmap puts agentic messaging (Tasks plus server-initiated events), HTTP-over-stdio, DPoP and agent identity, and a protocol-level progressive discovery mechanism on the next cycle. None of that is a client checkbox yet.",
+      "The 22 Aug 2026 cycle lists Tasks plus server-initiated events, HTTP-over-stdio, DPoP and agent identity, and protocol-level progressive discovery. Those are SEPs. No client on this board implements them.",
   },
   {
     slug: "mcp-spec-2026-07-28",
@@ -520,12 +569,22 @@ export const news = [
   },
   {
     slug: "webmcp-chrome-io-2026",
-    title: "WebMCP: the page is the server, and it is not MCP",
+    title: "Chrome I/O: pages register tools on document.modelContext",
     publishedAt: "2026-05-19",
     sourceName: "Chrome",
     sourceUrl: "https://developer.chrome.com/blog/chrome-at-io26",
     summary:
-      "Chrome I/O previewed WebMCP: document.modelContext tools that exist only while the tab is open. Complementary to MCP, not a replacement. Origin trial in Chrome 149. None of the five coding agents on this board consume it natively.",
+      "At I/O 2026 Chrome showed WebMCP: a page registers tools for the life of the tab. Origin trial in Chrome 149. The five coding agents on this board do not consume it.",
+  },
+  {
+    slug: "skills-over-mcp-sep-2640",
+    title: "SEP-2640: serve Agent Skills as MCP resources",
+    publishedAt: "2026-04-16",
+    sourceName: "MCP",
+    sourceUrl:
+      "https://modelcontextprotocol.io/community/working-groups/skills-over-mcp",
+    summary:
+      "The Skills Over MCP working group is drafting SEP-2640: SKILL.md directories over skill://, listed with skills/list. OpenAI's plugin Scan Tools imports a bounded snapshot. The five coding agents on this board still load skills from disk.",
   },
   {
     slug: "claude-code-tool-search",
@@ -552,6 +611,6 @@ export const news = [
     sourceName: "Anthropic",
     sourceUrl: "https://www.anthropic.com/engineering/code-execution-with-mcp",
     summary:
-      "Present MCP servers as code APIs. The model loads the tools it needs and filters results in a sandbox. Cloudflare called the same idea Code Mode. Claude Code itself still calls tools directly.",
+      "Present MCP servers as code APIs. The model loads the tools it needs and filters results in a sandbox. Cloudflare called the same idea Code Mode. Claude Code still calls tools directly.",
   },
 ] satisfies readonly NewsItem[];

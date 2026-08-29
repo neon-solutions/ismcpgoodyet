@@ -40,9 +40,8 @@ export default function Home() {
           <div className="h-full bg-neutral-900" style={{ width: barWidth }} />
         </div>
         <p className="mt-8 text-base text-neutral-700">
-          Codex, Cursor, Claude Code, Grok, and OpenCode against these MCP
-          features. Partial is opt-in, a subset, or experimental. Cells link to
-          docs or source.
+          Codex, Cursor, Claude Code, Grok, and OpenCode. Partial means opt-in,
+          a subset, or experimental. Click a cell for the source.
         </p>
       </header>
 
@@ -150,7 +149,7 @@ export default function Home() {
       </section>
 
       <footer className="mt-20 border-t border-neutral-200 pt-6 text-sm text-neutral-600">
-        ismcpgoodyet.com. Not official Neon. Cells cite public docs or source.
+        ismcpgoodyet.com. Labs under neon-solutions. Cells cite docs or source.
       </footer>
     </div>
   );

@@ -18,6 +18,7 @@ export type FeatureId =
   | "tool-filter"
   | "list-pagination"
   | "mcp-apps"
+  | "skills-over-mcp"
   | "oauth"
   | "approvals";
 
