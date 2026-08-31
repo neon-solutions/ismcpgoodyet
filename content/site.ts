@@ -76,11 +76,11 @@ export const features = [
   },
   {
     id: "dynamic-load",
-    name: "Dynamic tool loading",
+    name: "Deferred tool descriptions",
     kind: "client-pattern",
     summary:
-      "Native tool search or deferred schemas. The catalog is an index until the model hydrates a tool.",
-    specUrl: "https://code.claude.com/docs/en/agent-sdk/tool-search.md",
+      "The model does not get every MCP tool's full JSON up front. Names or a short index first; schemas load when needed.",
+    specUrl: "https://cursor.com/blog/dynamic-context-discovery",
     shippedAt: "2026-01-01",
   },
   {
@@ -272,36 +272,35 @@ export const status = {
   },
   "dynamic-load": {
     codex: {
-      status: "partial",
-      evidenceUrl: "https://github.com/openai/codex/pull/22256",
+      status: "yes",
+      evidenceUrl: "https://github.com/openai/codex/pull/29486",
       notes:
-        "tool_search plus defer_loading. omit_tools_from can hide a server from direct, deferred, or code_mode. Depends on the selected model supporting tool_search.",
+        "Default since 2026-06-22: MCP tools sit behind tool_search. The first request does not include those tools. Older models and providers that cannot search still get the full schemas.",
     },
     cursor: {
-      status: "partial",
+      status: "yes",
       evidenceUrl: "https://cursor.com/blog/dynamic-context-discovery",
       notes:
-        "Agent writes MCP tool descriptions to a folder and injects names until the model looks them up. CLI reports still send every schema in one request.",
+        "Turn 1 is tool names only. Full descriptions are files in a folder per server; the agent reads or greps them. Not a tool_search API. agent mcp list-tools is a human listing.",
     },
     "claude-code": {
       status: "yes",
       evidenceUrl: "https://code.claude.com/docs/en/agent-sdk/tool-search.md",
       notes:
-        "Tool Search is on by default. alwaysLoad / anthropic/alwaysLoad exempt a server or tool. auto:N defers once definitions cross a context fraction.",
+        "Tool Search is on by default. Definitions are withheld; the agent gets a summary and loads up to five matches. alwaysLoad keeps a tool in the prompt. Foundry and some Vertex or proxy hosts load everything.",
     },
     grok: {
       status: "yes",
       evidenceUrl:
         "https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-pager/docs/user-guide/07-mcp-servers.md",
       notes:
-        "search_tool discovers MCP tools; use_tool calls them. Schemas stay out of the prompt until search hits them.",
+        "search_tool finds MCP tools by name or description. use_tool calls them. The catalog is not dumped into the prompt.",
     },
     opencode: {
       status: "partial",
-      evidenceUrl:
-        "https://github.com/anomalyco/opencode/blob/dev/packages/web/src/content/docs/mcp-servers.mdx",
+      evidenceUrl: "https://opencode.ai/docs/mcp-servers",
       notes:
-        "Stock loads MCP tools into the prompt. Experimental Code Mode adds $codemode.search. mcp_search plugins are not core.",
+        "Default path puts MCP tools in the prompt. Docs warn GitHub MCP can blow the window. Experimental Code Mode searches instead. Filter is allow/deny, not deferral.",
     },
   },
   "tool-filter": {
