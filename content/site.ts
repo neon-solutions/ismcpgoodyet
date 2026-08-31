@@ -300,7 +300,7 @@ export const status = {
       status: "partial",
       evidenceUrl: "https://opencode.ai/docs/mcp-servers",
       notes:
-        "Default path puts MCP tools in the prompt. Docs warn GitHub MCP can blow the window. Experimental Code Mode searches instead. Filter is allow/deny, not deferral.",
+        "Default path puts MCP tools in the prompt. Docs warn GitHub MCP can blow the window. Experimental Code Mode puts a token-budgeted catalog in the prompt and searches for omitted signatures. Filter is allow/deny, not deferral.",
     },
   },
   "tool-filter": {
