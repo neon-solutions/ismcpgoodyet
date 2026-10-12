@@ -153,10 +153,10 @@ export const status = {
         "No public 2026-07-28 claim. Forum reports still show pre-stateless protocol versions.",
     },
     "claude-code": {
-      status: "partial",
-      evidenceUrl: "https://code.claude.com/docs/en/mcp#mcp-client-runtimes",
+      status: "yes",
+      evidenceUrl: "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
       notes:
-        "v2 runtime (SDK 2.x) adds 2026-07-28 and is default on Anthropic-hosted CLI/VS Code/SDK. Bedrock, Vertex, Foundry, and some flags stay on v1. Stdio 2026 needs MCP_PROTOCOL_NEGOTIATION=auto.",
+        "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295). MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
     },
     grok: {
       status: "no",
@@ -287,7 +287,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://code.claude.com/docs/en/agent-sdk/tool-search.md",
       notes:
-        "Tool Search is on by default. Definitions are withheld; the agent gets a summary and loads up to five matches. alwaysLoad keeps a tool in the prompt. Foundry and some Vertex or proxy hosts load everything.",
+        "Tool Search is on by default. Definitions are withheld; the agent gets a summary and loads up to five matches. alwaysLoad keeps a tool in the prompt; alwaysLoad: false on a server defers all its tools (2.1.287). Foundry and some Vertex or proxy hosts load everything.",
     },
     grok: {
       status: "yes",
@@ -337,16 +337,16 @@ export const status = {
   },
   "list-pagination": {
     codex: {
-      status: "partial",
-      evidenceUrl: "https://github.com/openai/codex/pull/35724",
+      status: "yes",
+      evidenceUrl: "https://github.com/openai/codex/pull/50035",
       notes:
-        "Drains nextCursor in opt-in 2026-07-28 mode. Default 2025-06-18 still ignores the cursor (issue 28858).",
+        "Drains nextCursor in both protocol modes. Default 2025-06-18 mode follows it since 0.162.0; opt-in 2026-07-28 mode already did.",
     },
     cursor: {
-      status: "no",
-      evidenceUrl:
-        "https://forum.cursor.com/t/mcp-cursor-only-registers-the-first-page-of-a-paginated-tools-list-doesnt-follow-nextcursor-14-tool-server-shows-8/165213",
-      notes: "Single tools/list request. Tools after the first page never appear.",
+      status: "yes",
+      evidenceUrl: "https://cursor.com/docs/release-notes",
+      notes:
+        "Oct 1, 2026 release: servers that paginate tools, prompts, or resources show every page, not just the first.",
     },
     "claude-code": {
       status: "yes",
@@ -439,7 +439,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://github.com/openai/codex/pull/38089",
       notes:
-        "codex mcp login opens a browser. Remote servers default to auth=oauth. Registration auto prefers CIMD, falls back to DCR.",
+        "codex mcp login opens a browser; /mcp login <name> does it from the TUI (0.161.0). Remote servers default to auth=oauth. Registration auto prefers CIMD, falls back to DCR. --oauth-client-secret for pre-registered clients (0.158.0).",
     },
     cursor: {
       status: "yes",
@@ -452,7 +452,7 @@ export const status = {
       evidenceUrl:
         "https://code.claude.com/docs/en/mcp#authenticate-with-remote-mcp-servers",
       notes:
-        "/mcp or claude mcp login. Discovers CIMD; DCR and pre-configured client id/secret also work. Agent SDK does not open a browser; pass Authorization.",
+        "/mcp or claude mcp login. Discovers CIMD; DCR and pre-configured client id/secret also work. Prompts to re-authenticate when a server asks for more scope mid-call (2.1.288). Agent SDK does not open a browser; pass Authorization.",
     },
     grok: {
       status: "yes",
@@ -547,6 +547,25 @@ export const timeline = [
 ] satisfies readonly TimelineEvent[];
 
 export const news = [
+  {
+    slug: "mcp-sdk-advisories-2026-10",
+    title: "Ten security advisories hit the official MCP SDKs in eight days",
+    publishedAt: "2026-10-05",
+    sourceName: "MCP TypeScript SDK",
+    sourceUrl:
+      "https://github.com/modelcontextprotocol/typescript-sdk/security/advisories",
+    summary:
+      "Six Python and four TypeScript advisories between 28 Sep and 5 Oct. OAuth clients could send credentials to an authorization server the MCP server chose, bearer auth accepted tokens issued for another service, HTTP transports followed cross-origin redirects with custom headers, and TypeScript experimental tasks were not tied to their session. Clients and servers built on these SDKs need the patched releases.",
+  },
+  {
+    slug: "openai-mcp-extensions",
+    title: "OpenAI open-sources mcp-extensions for ChatGPT plugins",
+    publishedAt: "2026-09-29",
+    sourceName: "GitHub",
+    sourceUrl: "https://github.com/openai/mcp-extensions",
+    summary:
+      "OpenAI published openai/mcp-extensions: a toolkit to build MCP-based plugins that feel like native, first-class features of ChatGPT.",
+  },
   {
     slug: "mcp-roadmap-2026-08",
     title:
