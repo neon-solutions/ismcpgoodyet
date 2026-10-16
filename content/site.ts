@@ -156,7 +156,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
       notes:
-        "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295). MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
+        "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295), cloud sessions and Remote Control connectors (2.1.299). MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
     },
     grok: {
       status: "no",
@@ -313,7 +313,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://cursor.com/help/customization/mcp",
       notes:
-        "Customize > MCPs toggles a server. Click a tool name in the chat tools list to turn it off. CLI: agent mcp enable|disable and permissions.deny Mcp(server:tool).",
+        "Customize > MCPs toggles a server. Click a tool name in the chat tools list to turn it off. CLI: agent mcp enable|disable and permissions.deny Mcp(server:tool). Team admins can limit a URL server's tools from its detail dialog (Oct 5).",
     },
     "claude-code": {
       status: "yes",
@@ -445,7 +445,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://cursor.com/docs/mcp",
       notes:
-        "Marketplace Add to Cursor runs OAuth. Static CLIENT_ID/SECRET in mcp.json. CLI: agent mcp login. Cloud OAuth is per user on Cursor's backend.",
+        "Marketplace Add to Cursor runs OAuth. Static CLIENT_ID/SECRET in mcp.json. CLI: agent mcp login. Cloud OAuth is per user on Cursor's backend. Servers that reject local redirect URLs sign in through a Cursor-hosted callback page (Oct 9).",
     },
     "claude-code": {
       status: "yes",
@@ -479,7 +479,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://cursor.com/changelog/auto-review",
       notes:
-        "Auto-review classifier plus mcpAllowlist. MCP follows Run Modes. CLI: approvalMode, /auto-review, --approve-mcps.",
+        "Auto-review classifier plus mcpAllowlist. MCP follows Run Modes. Tools the server marks as requiring confirmation always prompt under Auto-review. CLI: approvalMode, /auto-review, --approve-mcps.",
     },
     "claude-code": {
       status: "yes",
