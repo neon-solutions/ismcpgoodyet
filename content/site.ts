@@ -156,7 +156,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
       notes:
-        "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295), cloud sessions and Remote Control connectors (2.1.299). MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
+        "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295), cloud sessions and Remote Control connectors (2.1.299). 2.1.302 accepts servers that omit resultType, ttlMs, or cacheScope. MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
     },
     grok: {
       status: "no",
@@ -219,9 +219,9 @@ export const status = {
     },
     "claude-code": {
       status: "no",
-      evidenceUrl: "https://github.com/anthropics/claude-code/issues/76571",
+      evidenceUrl: "https://github.com/anthropics/claude-code/issues/52137",
       notes:
-        "Open request to implement MCP Tasks. Auto-background of a slow tools/call is not the extension.",
+        "Requests to implement MCP Tasks were closed as not planned (Aug 22) and duplicate. Auto-background of a slow tools/call is not the extension.",
     },
     grok: {
       status: "no",
@@ -386,7 +386,7 @@ export const status = {
       status: "no",
       evidenceUrl: "https://github.com/anthropics/claude-code/issues/88881",
       notes:
-        "Claude mobile, web, desktop, and Cowork render Apps. Claude Code CLI and VS Code show the text result.",
+        "Claude mobile, web, desktop, and Cowork render Apps. Claude Code CLI and VS Code show the text result. The request to render Apps for local servers was closed as inactive (Oct 16).",
     },
     grok: {
       status: "partial",
