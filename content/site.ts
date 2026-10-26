@@ -439,7 +439,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://github.com/openai/codex/pull/38089",
       notes:
-        "codex mcp login opens a browser; /mcp login <name> does it from the TUI (0.161.0). Remote servers default to auth=oauth. Registration auto prefers CIMD, falls back to DCR. --oauth-client-secret for pre-registered clients (0.158.0).",
+        "codex mcp login opens a browser; /mcp login <name> does it from the TUI (0.161.0). Remote servers default to auth=oauth. Registration auto prefers CIMD, falls back to DCR. --oauth-client-secret for pre-registered clients (0.158.0). 0.164.0 adds enterprise-managed authorization and requests the resource's scopes, not the authorization server's full list.",
     },
     cursor: {
       status: "yes",
@@ -547,6 +547,25 @@ export const timeline = [
 ] satisfies readonly TimelineEvent[];
 
 export const news = [
+  {
+    slug: "mcp-tasks-events-wg",
+    title: "Tasks moves to a new Tasks and Events working group",
+    publishedAt: "2026-10-26",
+    sourceName: "MCP docs",
+    sourceUrl: "https://modelcontextprotocol.io/extensions/client-matrix",
+    summary:
+      "On 20 Oct the Agents Working Group became an Interest Group, and Tasks moved to a new Tasks and Events Working Group alongside triggers and events. On 26 Oct the extension client matrix gained a Tasks column. MCPJam is the only client checked; none of the five coding agents on this board implement Tasks.",
+  },
+  {
+    slug: "mcp-typescript-sdk-http-advisories",
+    title: "Three high-severity HTTP advisories in the MCP TypeScript SDK",
+    publishedAt: "2026-10-15",
+    sourceName: "MCP TypeScript SDK",
+    sourceUrl:
+      "https://github.com/modelcontextprotocol/typescript-sdk/security/advisories/GHSA-jm63-cq47-j5jp",
+    summary:
+      "A shared stateless transport or a single McpServer instance could deliver one HTTP client's responses to another, because messages were matched by JSON-RPC id alone. Separately, servers did not limit body size, batch length, or how many array elements and keys they validated, so one unauthenticated request could exhaust memory. Fixed in @modelcontextprotocol/sdk 1.32.0 and @modelcontextprotocol/server 2.3.0.",
+  },
   {
     slug: "mcp-sdk-advisories-2026-10",
     title: "Ten security advisories hit the official MCP SDKs in eight days",
