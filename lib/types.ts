@@ -7,7 +7,8 @@ export type ClientId =
   | "cursor"
   | "claude-code"
   | "grok"
-  | "opencode";
+  | "opencode"
+  | "factory-droid";
 
 export type FeatureId =
   | "stateless-2026-07-28"

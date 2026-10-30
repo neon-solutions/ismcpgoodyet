@@ -39,8 +39,9 @@ export default function Home() {
           <div className="h-full bg-neutral-900" style={{ width: barWidth }} />
         </div>
         <p className="mt-8 text-base text-neutral-700">
-          Codex, Cursor, Claude Code, Grok, and OpenCode. Partial means opt-in,
-          a subset, or experimental. Click a cell for the source.
+          Codex, Cursor, Claude Code, Grok, OpenCode, and Factory Droid.
+          Partial means opt-in, a subset, or experimental. Click a cell for the
+          source.
         </p>
       </header>
 

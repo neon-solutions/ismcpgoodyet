@@ -2,7 +2,7 @@
 
 [ismcpgoodyet.com](https://ismcpgoodyet.com) — is MCP good yet?
 
-A scoreboard of MCP features in Codex, Cursor, Claude Code, Grok, and OpenCode, plus MCP news.
+A scoreboard of MCP features in Codex, Cursor, Claude Code, Grok, OpenCode, and Factory Droid, plus MCP news.
 
 ```bash
 bun install

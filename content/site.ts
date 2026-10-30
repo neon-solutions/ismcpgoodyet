@@ -34,6 +34,11 @@ export const clients = [
     name: "OpenCode",
     docsUrl: "https://opencode.ai/docs/mcp-servers",
   },
+  {
+    id: "factory-droid",
+    name: "Factory Droid",
+    docsUrl: "https://docs.factory.com/harness/mcp",
+  },
 ] satisfies readonly Client[];
 
 export const features = [
@@ -170,6 +175,12 @@ export const status = {
       notes:
         "SDK v2 client migration reverted 2026-07-28. Stock still uses the initialize handshake.",
     },
+    "factory-droid": {
+      status: "no",
+      evidenceUrl: "https://docs.factory.com/harness/mcp",
+      notes:
+        "No public 2026-07-28 claim. 1.0.0 carries 2026-07-28 negotiation behind a server-side flag that is off.",
+    },
   },
   elicitation: {
     codex: {
@@ -202,6 +213,12 @@ export const status = {
       evidenceUrl:
         "https://github.com/anomalyco/opencode/blob/dev/packages/opencode/src/mcp/index.ts",
       notes: "elicitation capability is commented out. No request handler.",
+    },
+    "factory-droid": {
+      status: "partial",
+      evidenceUrl: "https://docs.factory.com/changelog/release-notes",
+      notes:
+        "Elicitation prompts from MCP tools appear and resume after an interruption (0.112.0). MCP docs do not cover it; form vs URL mode is not documented.",
     },
   },
   tasks: {
@@ -236,6 +253,12 @@ export const status = {
         "https://github.com/anomalyco/opencode/blob/dev/packages/opencode/src/mcp/index.ts",
       notes: "tasks capability is commented out. Built-in task subagent is unrelated.",
     },
+    "factory-droid": {
+      status: "no",
+      evidenceUrl: "https://docs.factory.com/harness/mcp",
+      notes:
+        "MCP docs cover transports, tools, OAuth, filtering, timeouts, and policy. No Tasks extension. Droid's own Task subagents are unrelated.",
+    },
   },
   "code-mode": {
     codex: {
@@ -268,6 +291,12 @@ export const status = {
         "https://github.com/anomalyco/opencode/blob/dev/packages/codemode/codemode.md",
       notes:
         "Ships in core behind OPENCODE_EXPERIMENTAL_CODE_MODE. MCP tools become child tools of execute. Default path still loads schemas into the prompt.",
+    },
+    "factory-droid": {
+      status: "yes",
+      evidenceUrl: "https://factory.com/news/frontier-harness",
+      notes:
+        "Default since Droid 1.0 (Oct 29): the model writes JavaScript in a sandboxed Script tool that calls many tools, MCP included, in one request. On by default for GPT-6.x, GPT-5.6 Sol, Claude Opus 5 and 5.5, Fable, and Kimi K3; other models call tools directly.",
     },
   },
   "dynamic-load": {
@@ -302,6 +331,12 @@ export const status = {
       notes:
         "Default path puts MCP tools in the prompt. Docs warn GitHub MCP can blow the window. Experimental Code Mode puts a token-budgeted catalog in the prompt and searches for omitted signatures. Filter is allow/deny, not deferral.",
     },
+    "factory-droid": {
+      status: "yes",
+      evidenceUrl: "https://docs.factory.com/changelog/release-notes",
+      notes:
+        "MCP tool search on by default since 0.140.0 (Jun 3): Droid searches and loads MCP tools on demand. Droid 1.0 sends 2 tool definitions up front.",
+    },
   },
   "tool-filter": {
     codex: {
@@ -333,6 +368,12 @@ export const status = {
       evidenceUrl: "https://opencode.ai/docs/mcp-servers",
       notes:
         "mcp.<name>.enabled disables a server without deleting it. Permission rules can deny a prefixed MCP tool id.",
+    },
+    "factory-droid": {
+      status: "yes",
+      evidenceUrl: "https://docs.factory.com/harness/mcp",
+      notes:
+        "disabled: true or /mcp toggles a server without removing it. enabledTools allow list, disabledTools deny list.",
     },
   },
   "list-pagination": {
@@ -367,6 +408,12 @@ export const status = {
       notes:
         "Follows cursors for tools, prompts, resources, and templates. Cycle detection, 1000-page cap.",
     },
+    "factory-droid": {
+      status: "yes",
+      evidenceUrl: "https://github.com/Factory-AI/factory/issues/7",
+      notes:
+        "1.0.0 follows nextCursor on tools/list and stops on a repeated cursor. The issue reporting only the first page (filed on 0.186.0) is still open, and no changelog line names the fix.",
+    },
   },
   "mcp-apps": {
     codex: {
@@ -400,6 +447,12 @@ export const status = {
       evidenceUrl: "https://github.com/anomalyco/opencode/issues/10884",
       notes: "Open request. No Apps host in core.",
     },
+    "factory-droid": {
+      status: "no",
+      evidenceUrl: "https://docs.factory.com/harness/mcp",
+      notes:
+        "No Apps host documented. No io.modelcontextprotocol/ui or text/html;profile=mcp-app in 1.0.0.",
+    },
   },
   "skills-over-mcp": {
     codex: {
@@ -432,6 +485,12 @@ export const status = {
       evidenceUrl: "https://opencode.ai/docs/skills",
       notes:
         "Skills load from .opencode/skills, .claude/skills, and .agents/skills. The skill tool reads SKILL.md from disk. No skills/list or io.modelcontextprotocol/skills in core.",
+    },
+    "factory-droid": {
+      status: "no",
+      evidenceUrl: "https://docs.factory.com/harness/skills",
+      notes:
+        "Skills load from .factory/skills, .agents/skills, .agent/skills, and plugins. No skills/list or skill://.",
     },
   },
   oauth: {
@@ -467,6 +526,12 @@ export const status = {
       notes:
         "Automatic for remote servers. DCR if the server supports it. opencode mcp auth / list / logout.",
     },
+    "factory-droid": {
+      status: "yes",
+      evidenceUrl: "https://docs.factory.com/harness/mcp",
+      notes:
+        "Remote servers sign in from /mcp in a browser. Discovers the auth server, uses CIMD when supported, falls back to DCR. oauth.clientId/clientSecret for pre-registered clients. Tokens in the system keyring.",
+    },
   },
   approvals: {
     codex: {
@@ -499,6 +564,12 @@ export const status = {
       evidenceUrl: "https://opencode.ai/docs/permissions",
       notes:
         "allow, ask, deny, plus --auto for anything not denied. MCP tools use the same permission keys as their prefixed ids. No annotation-aware MCP policy.",
+    },
+    "factory-droid": {
+      status: "yes",
+      evidenceUrl: "https://docs.factory.com/autonomy-and-safety/auto-run",
+      notes:
+        "MCP tools get a low, medium, or high risk level that is compared against the Autonomy Level. Read-only hints feed the classification. droid mcp permissions persists approvals per server.",
     },
   },
 } satisfies Record<FeatureId, Record<ClientId, Cell>>;
@@ -547,6 +618,15 @@ export const timeline = [
 ] satisfies readonly TimelineEvent[];
 
 export const news = [
+  {
+    slug: "factory-droid-script-mode",
+    title: "Factory Droid 1.0 makes code mode the default",
+    publishedAt: "2026-10-29",
+    sourceName: "Factory",
+    sourceUrl: "https://factory.com/news/frontier-harness",
+    summary:
+      "Droid 1.0 runs most tool calls, MCP included, inside a Script tool: the model writes JavaScript that calls many tools in one request and prints only what it needs. On by default for GPT-6.x, GPT-5.6 Sol, Claude Opus 5 and 5.5, Fable, and Kimi K3. Codex keeps code mode opt-in and OpenCode keeps it experimental.",
+  },
   {
     slug: "mcp-tasks-events-wg",
     title: "Tasks moves to a new Tasks and Events working group",
