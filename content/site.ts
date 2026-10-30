@@ -32,7 +32,7 @@ export const clients = [
   {
     id: "opencode",
     name: "OpenCode",
-    docsUrl: "https://opencode.ai/docs/mcp-servers",
+    docsUrl: "https://opencode.ai/v2/docs/mcp-servers",
   },
   {
     id: "factory-droid",
@@ -148,7 +148,7 @@ export const status = {
       status: "partial",
       evidenceUrl: "https://github.com/openai/codex/pull/35724",
       notes:
-        "Opt-in mcp_2026_07_28. Default remains 2025-06-18. Stdio also needs CODEX_MCP_PROTOCOL_VERSION.",
+        "Opt-in mcp_2026_07_28. Default remains 2025-06-18. Stdio also needs CODEX_MCP_PROTOCOL_VERSION, or the off-by-default mcp_connection_sharing feature, which probes eligible local stdio servers (0.166.0).",
     },
     cursor: {
       status: "no",
@@ -170,10 +170,10 @@ export const status = {
       notes: "Grok Build pins the wire to 2025-11-25 so an rmcp bump cannot silently move it.",
     },
     opencode: {
-      status: "no",
-      evidenceUrl: "https://github.com/anomalyco/opencode/pull/39373",
+      status: "partial",
+      evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers#protocol-version",
       notes:
-        "SDK v2 client migration reverted 2026-07-28. Stock still uses the initialize handshake.",
+        "OpenCode 2.2 adds a per-server protocol: legacy (default), auto, or 2026-07-28. auto probes server/discover and falls back to initialize. OpenCode 1 still uses the initialize handshake.",
     },
     "factory-droid": {
       status: "no",
@@ -209,10 +209,10 @@ export const status = {
       notes: "Client advertises form (with schema validation) and URL elicitation.",
     },
     opencode: {
-      status: "no",
-      evidenceUrl:
-        "https://github.com/anomalyco/opencode/blob/dev/packages/opencode/src/mcp/index.ts",
-      notes: "elicitation capability is commented out. No request handler.",
+      status: "yes",
+      evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers#input-requests",
+      notes:
+        "OpenCode 2.2 advertises form and URL elicitation. Requests show as a form or a link to open; dismissing cancels. OpenCode 1 has no handler.",
     },
     "factory-droid": {
       status: "partial",
@@ -235,10 +235,11 @@ export const status = {
         "Support table is Tools, Prompts, Resources, Roots, Elicitation, Apps. Tasks is absent. Cursor's own Task/subagent tool is unrelated.",
     },
     "claude-code": {
-      status: "no",
-      evidenceUrl: "https://github.com/anthropics/claude-code/issues/52137",
+      status: "partial",
+      evidenceUrl:
+        "https://code.claude.com/docs/en/mcp#mcp-tasks-that-run-on-the-server",
       notes:
-        "Requests to implement MCP Tasks were closed as not planned (Aug 22) and duplicate. Auto-background of a slow tools/call is not the extension.",
+        "Public beta in the CLI since 2.1.304. Polls tasks/get, answers input_required through tasks/update, and cancels with tasks/cancel. tasks/list and task notifications are unused.",
     },
     grok: {
       status: "no",
@@ -250,8 +251,8 @@ export const status = {
     opencode: {
       status: "no",
       evidenceUrl:
-        "https://github.com/anomalyco/opencode/blob/dev/packages/opencode/src/mcp/index.ts",
-      notes: "tasks capability is commented out. Built-in task subagent is unrelated.",
+        "https://github.com/anomalyco/opencode/blob/v2.2.3/packages/core/src/mcp/client.ts",
+      notes: "Client capabilities are elicitation and roots. No io.modelcontextprotocol/tasks. Built-in task subagent is unrelated.",
     },
     "factory-droid": {
       status: "no",
@@ -286,11 +287,10 @@ export const status = {
       notes: "MCP goes through search_tool and use_tool, not model-written code that calls MCP.",
     },
     opencode: {
-      status: "partial",
-      evidenceUrl:
-        "https://github.com/anomalyco/opencode/blob/dev/packages/codemode/codemode.md",
+      status: "yes",
+      evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers#permissions",
       notes:
-        "Ships in core behind OPENCODE_EXPERIMENTAL_CODE_MODE. MCP tools become child tools of execute. Default path still loads schemas into the prompt.",
+        "Default in OpenCode 2.2: the model calls tools.<server>.<tool>() inside execute. codemode: false on a server keeps its tools on the native tool list. OpenCode 1 has it behind OPENCODE_EXPERIMENTAL_CODE_MODE.",
     },
     "factory-droid": {
       status: "yes",
@@ -326,10 +326,11 @@ export const status = {
         "search_tool finds MCP tools by name or description. use_tool calls them. The catalog is not dumped into the prompt.",
     },
     opencode: {
-      status: "partial",
-      evidenceUrl: "https://opencode.ai/docs/mcp-servers",
+      status: "yes",
+      evidenceUrl:
+        "https://github.com/anomalyco/opencode/blob/v2.2.3/packages/core/src/codemode/catalog.ts",
       notes:
-        "Default path puts MCP tools in the prompt. Docs warn GitHub MCP can blow the window. Experimental Code Mode puts a token-budgeted catalog in the prompt and searches for omitted signatures. Filter is allow/deny, not deferral.",
+        "Under default Code Mode (2.2) the prompt gets a catalog capped at about 2,000 tokens; search(...) returns signatures for omitted tools. Servers with codemode: false still load full schemas.",
     },
     "factory-droid": {
       status: "yes",
@@ -365,9 +366,9 @@ export const status = {
     },
     opencode: {
       status: "yes",
-      evidenceUrl: "https://opencode.ai/docs/mcp-servers",
+      evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers",
       notes:
-        "mcp.<name>.enabled disables a server without deleting it. Permission rules can deny a prefixed MCP tool id.",
+        "disabled: true keeps a server configured without connecting it. Permission rules can deny a prefixed MCP tool id.",
     },
     "factory-droid": {
       status: "yes",
@@ -404,9 +405,9 @@ export const status = {
     opencode: {
       status: "yes",
       evidenceUrl:
-        "https://github.com/anomalyco/opencode/blob/dev/packages/opencode/src/mcp/catalog.ts",
+        "https://github.com/anomalyco/opencode/blob/v1.19.5/packages/opencode/src/mcp/catalog.ts",
       notes:
-        "Follows cursors for tools, prompts, resources, and templates. Cycle detection, 1000-page cap.",
+        "OpenCode 1 follows cursors for tools, prompts, resources, and templates with cycle detection and a 1000-page cap. OpenCode 2.2 lists through @modelcontextprotocol/client 2.3.1, which follows nextCursor up to a page cap.",
     },
     "factory-droid": {
       status: "yes",
@@ -482,9 +483,9 @@ export const status = {
     },
     opencode: {
       status: "no",
-      evidenceUrl: "https://opencode.ai/docs/skills",
+      evidenceUrl: "https://opencode.ai/v2/docs/skills",
       notes:
-        "Skills load from .opencode/skills, .claude/skills, and .agents/skills. The skill tool reads SKILL.md from disk. No skills/list or io.modelcontextprotocol/skills in core.",
+        "Skills load from .opencode/skills on disk. No skills/list or io.modelcontextprotocol/skills in the 2.2 MCP client.",
     },
     "factory-droid": {
       status: "no",
@@ -521,10 +522,9 @@ export const status = {
     },
     opencode: {
       status: "yes",
-      evidenceUrl:
-        "https://github.com/anomalyco/opencode/blob/dev/packages/web/src/content/docs/mcp-servers.mdx",
+      evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers#client-registration",
       notes:
-        "Automatic for remote servers. DCR if the server supports it. opencode mcp auth / list / logout.",
+        "Automatic for remote servers. Uses a pre-registered client, then CIMD, then DCR (2.2). opencode mcp auth / list / logout.",
     },
     "factory-droid": {
       status: "yes",
@@ -561,9 +561,9 @@ export const status = {
     },
     opencode: {
       status: "yes",
-      evidenceUrl: "https://opencode.ai/docs/permissions",
+      evidenceUrl: "https://opencode.ai/v2/docs/permissions",
       notes:
-        "allow, ask, deny, plus --auto for anything not denied. MCP tools use the same permission keys as their prefixed ids. No annotation-aware MCP policy.",
+        "Ordered allow, ask, and deny rules. MCP tools use the same permission keys as their prefixed ids. No annotation-aware MCP policy.",
     },
     "factory-droid": {
       status: "yes",
@@ -628,13 +628,40 @@ export const news = [
       "Droid 1.0 runs most tool calls, MCP included, inside a Script tool: the model writes JavaScript that calls many tools in one request and prints only what it needs. On by default for GPT-6.x, GPT-5.6 Sol, Claude Opus 5 and 5.5, Fable, and Kimi K3. Codex keeps code mode opt-in and OpenCode keeps it experimental.",
   },
   {
+    slug: "mcp-extension-lifecycle",
+    title: "MCP extensions get stages: Apps and Auth Stable, Tasks and Skills Beta",
+    publishedAt: "2026-10-29",
+    sourceName: "MCP",
+    sourceUrl: "https://modelcontextprotocol.io/seps/3392-extension-lifecycle",
+    summary:
+      "SEP-3392 is Final. Extensions move from Experimental to Beta to Stable or into the core spec, and Experimental and Beta extensions may still break. ext-apps and ext-auth are Stable; ext-skills, ext-tasks, and ext-server-card are Beta.",
+  },
+  {
+    slug: "claude-code-mcp-tasks",
+    title: "Claude Code runs MCP Tasks in public beta",
+    publishedAt: "2026-10-28",
+    sourceName: "Claude Code docs",
+    sourceUrl: "https://code.claude.com/docs/en/mcp#mcp-tasks-that-run-on-the-server",
+    summary:
+      "Claude Code 2.1.304 and later can run a tool call as an MCP task: it polls tasks/get, answers input requests through tasks/update, and cancels with tasks/cancel. On 28 Oct the extension client matrix checked Tasks for Claude Code and Claude.ai. It is the first client on this board with Tasks.",
+  },
+  {
+    slug: "opencode-2-2",
+    title: "OpenCode 2.2 defaults MCP to Code Mode and answers elicitation",
+    publishedAt: "2026-10-27",
+    sourceName: "GitHub",
+    sourceUrl: "https://github.com/anomalyco/opencode/releases/tag/v2.2.0",
+    summary:
+      "OpenCode 2.2.0 is the first 2.x release, installed from opencode.ai/v2/install. MCP tools run through Code Mode by default, with a catalog of about 2,000 tokens in the prompt and search for the rest. Servers can request form or URL input, and a per-server protocol setting opts into 2026-07-28. OpenCode 1 continues as 1.19.5; this board now scores OpenCode 2.",
+  },
+  {
     slug: "mcp-tasks-events-wg",
     title: "Tasks moves to a new Tasks and Events working group",
     publishedAt: "2026-10-26",
     sourceName: "MCP docs",
     sourceUrl: "https://modelcontextprotocol.io/extensions/client-matrix",
     summary:
-      "On 20 Oct the Agents Working Group became an Interest Group, and Tasks moved to a new Tasks and Events Working Group alongside triggers and events. On 26 Oct the extension client matrix gained a Tasks column. MCPJam is the only client checked; none of the five coding agents on this board implement Tasks.",
+      "On 20 Oct the Agents Working Group became an Interest Group, and Tasks moved to a new Tasks and Events Working Group alongside triggers and events. On 26 Oct the extension client matrix gained a Tasks column. MCPJam was the only client checked that day; on 28 Oct the matrix added Claude Code.",
   },
   {
     slug: "mcp-typescript-sdk-http-advisories",
