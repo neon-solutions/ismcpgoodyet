@@ -200,7 +200,7 @@ export const status = {
       evidenceUrl:
         "https://code.claude.com/docs/en/mcp#respond-to-mcp-elicitation-requests",
       notes:
-        "Form or URL dialogs appear automatically. Elicitation hooks and Agent SDK onElicitation can answer without a dialog.",
+        "Form or URL dialogs appear automatically. Cloud sessions show a form card (2.1.316). Elicitation hooks and Agent SDK onElicitation can answer without a dialog.",
     },
     grok: {
       status: "yes",
@@ -368,7 +368,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers",
       notes:
-        "disabled: true keeps a server configured without connecting it. Permission rules can deny a prefixed MCP tool id.",
+        "disabled: true keeps a server configured without connecting it. Permission rules can deny a prefixed MCP tool id. Managed policy mcp.use controls which MCP servers can be used (2.2.3).",
     },
     "factory-droid": {
       status: "yes",
@@ -625,7 +625,7 @@ export const news = [
     sourceName: "Factory",
     sourceUrl: "https://factory.com/news/frontier-harness",
     summary:
-      "Droid 1.0 runs most tool calls, MCP included, inside a Script tool: the model writes JavaScript that calls many tools in one request and prints only what it needs. On by default for GPT-6.x, GPT-5.6 Sol, Claude Opus 5 and 5.5, Fable, and Kimi K3. Codex keeps code mode opt-in and OpenCode keeps it experimental.",
+      "Droid 1.0 runs most tool calls, MCP included, inside a Script tool: the model writes JavaScript that calls many tools in one request and prints only what it needs. On by default for GPT-6.x, GPT-5.6 Sol, Claude Opus 5 and 5.5, Fable, and Kimi K3. Codex keeps code mode opt-in; OpenCode 2.2 also defaults to Code Mode.",
   },
   {
     slug: "mcp-extension-lifecycle",
@@ -700,7 +700,7 @@ export const news = [
     sourceName: "MCP docs",
     sourceUrl: "https://modelcontextprotocol.io/development/roadmap",
     summary:
-      "The 22 Aug 2026 cycle lists Tasks plus server-initiated events, HTTP-over-stdio, DPoP and agent identity, and protocol-level progressive discovery. Those are SEPs. No client on this board implements them.",
+      "The 22 Aug 2026 cycle lists Tasks plus server-initiated events, HTTP-over-stdio, DPoP and agent identity, and protocol-level progressive discovery. Those are SEPs. Claude Code runs Tasks in public beta since 28 Oct; no client on this board implements the rest.",
   },
   {
     slug: "mcp-spec-2026-07-28",
