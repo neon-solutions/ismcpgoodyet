@@ -161,7 +161,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
       notes:
-        "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295), cloud sessions and Remote Control connectors (2.1.299). 2.1.302 accepts servers that omit resultType, ttlMs, or cacheScope. MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
+        "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295), cloud sessions and Remote Control connectors (2.1.299). 2.1.302 accepts servers that omit resultType, ttlMs, or cacheScope. 2.1.318 stops re-probing stdio servers that exit on the version probe and pins a server that dies within 3s to the legacy handshake for 7 days. MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
     },
     grok: {
       status: "no",
@@ -530,7 +530,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://docs.factory.com/harness/mcp",
       notes:
-        "Remote servers sign in from /mcp in a browser. Discovers the auth server, uses CIMD when supported, falls back to DCR. oauth.clientId/clientSecret for pre-registered clients. Tokens in the system keyring.",
+        "Remote servers sign in from /mcp in a browser. Discovers the auth server, uses CIMD when supported, falls back to DCR. oauth.clientId/clientSecret for pre-registered clients. Tokens in the system keyring. Adding a server from a session on another computer signs in through your browser (1.3.0).",
     },
   },
   approvals: {
