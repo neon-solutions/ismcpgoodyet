@@ -161,7 +161,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
       notes:
-        "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295), cloud sessions and Remote Control connectors (2.1.299). 2.1.302 accepts servers that omit resultType, ttlMs, or cacheScope. 2.1.318 stops re-probing stdio servers that exit on the version probe and pins a server that dies within 3s to the legacy handshake for 7 days. MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
+        "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295), cloud sessions and Remote Control connectors (2.1.299). 2.1.302 accepts servers that omit resultType, ttlMs, or cacheScope. 2.1.318 stops re-probing stdio servers that exit on the version probe and pins a server that dies within 3s to the legacy handshake for 7 days. 2.1.319 fixes legacy-handshake servers failing to connect or returning empty results because Claude Code declared an extension it only uses with newer servers. MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
     },
     grok: {
       status: "no",
@@ -173,7 +173,7 @@ export const status = {
       status: "partial",
       evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers#protocol-version",
       notes:
-        "OpenCode 2.2 adds a per-server protocol: legacy (default), auto, or 2026-07-28. auto probes server/discover and falls back to initialize. OpenCode 1 still uses the initialize handshake.",
+        "OpenCode 2.2 adds a per-server protocol: legacy (default), auto, or 2026-07-28. auto probes server/discover and falls back to initialize; 2.2.6 also falls back for stdio servers that ignore the probe. OpenCode 1 still uses the initialize handshake.",
     },
     "factory-droid": {
       status: "no",
@@ -236,10 +236,9 @@ export const status = {
     },
     "claude-code": {
       status: "partial",
-      evidenceUrl:
-        "https://code.claude.com/docs/en/mcp#mcp-tasks-that-run-on-the-server",
+      evidenceUrl: "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
       notes:
-        "Public beta in the CLI since 2.1.304. Polls tasks/get, answers input_required through tasks/update, and cancels with tasks/cancel. tasks/list and task notifications are unused.",
+        "Public beta in the CLI since 2.1.304. Polls tasks/get, answers input_required through tasks/update, and cancels with tasks/cancel. 2.1.319 moves a task to the background at once and runs Tasks on Bedrock, Vertex, Foundry, and LLM gateways without feature-flag fetching. tasks/list and task notifications are unused.",
     },
     grok: {
       status: "no",
