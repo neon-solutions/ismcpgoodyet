@@ -161,7 +161,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
       notes:
-        "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295), cloud sessions and Remote Control connectors (2.1.299). 2.1.302 accepts servers that omit resultType, ttlMs, or cacheScope. 2.1.318 stops re-probing stdio servers that exit on the version probe and pins a server that dies within 3s to the legacy handshake for 7 days. 2.1.319 fixes legacy-handshake servers failing to connect or returning empty results because Claude Code declared an extension it only uses with newer servers. MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
+        "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295), cloud sessions and Remote Control connectors (2.1.299). 2.1.302 accepts servers that omit resultType, ttlMs, or cacheScope. 2.1.318 stops re-probing stdio servers that exit on the version probe and pins a server that dies within 3s to the legacy handshake for 7 days. 2.1.319 fixes legacy-handshake servers failing to connect or returning empty results because Claude Code declared an extension it only uses with newer servers. 2.1.323 removes the v1 MCP client; MCP_SDK_GENERATION=v1 now runs the v2 client on the earlier handshake. MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
     },
     grok: {
       status: "no",
@@ -275,9 +275,9 @@ export const status = {
     },
     "claude-code": {
       status: "no",
-      evidenceUrl: "https://code.claude.com/docs/en/mcp",
+      evidenceUrl: "https://code.claude.com/docs/en/code-mode",
       notes:
-        "Claude Code connects MCP servers and calls their tools (Tool Search when the catalog is large). No native execute-code-against-MCP surface. The Anthropic code-execution article is a builder pattern, not a Claude Code feature.",
+        "Claude Code connects MCP servers and calls their tools (Tool Search when the catalog is large). 2.1.323 adds an experimental, off-by-default Code Mode (CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1) where Claude writes JavaScript that calls its tools in one step; the docs show only built-in tools such as Bash, Read, and Edit, not MCP tools. Terminal sessions on a Claude subscription or Console account only; not through a gateway, Bedrock, Vertex, or Foundry.",
     },
     grok: {
       status: "no",
@@ -329,7 +329,7 @@ export const status = {
       evidenceUrl:
         "https://github.com/anomalyco/opencode/blob/v2.2.3/packages/core/src/codemode/catalog.ts",
       notes:
-        "Under default Code Mode (2.2) the prompt gets a catalog capped at about 2,000 tokens; search(...) returns signatures for omitted tools. Servers with codemode: false still load full schemas.",
+        "Under default Code Mode (2.2) the prompt gets a catalog capped at about 2,000 tokens; search(...) returns signatures for omitted tools. 2.2.7 sends only what changed when servers connect, disconnect, or change tools. Servers with codemode: false still load full schemas.",
     },
     "factory-droid": {
       status: "yes",
@@ -537,7 +537,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://developers.openai.com/codex/mcp",
       notes:
-        "approval_mode auto, prompt, writes, approve. writes prompts when the tool is not read-only. readOnlyHint can skip approval.",
+        "approval_mode auto, prompt, writes, approve. writes prompts when the tool is not read-only. readOnlyHint can skip approval; since 0.169.0 it takes precedence over destructiveHint and openWorldHint in automatic approval (PR 60638).",
     },
     cursor: {
       status: "yes",
@@ -614,9 +614,51 @@ export const timeline = [
     title: "MCP roadmap: messaging, identity, discovery",
     href: "https://modelcontextprotocol.io/development/roadmap",
   },
+  {
+    date: "2026-11-11",
+    title: "MCP moves to two spec releases a year",
+    href: "https://blog.modelcontextprotocol.io/posts/mcp-release-cycle/",
+  },
 ] satisfies readonly TimelineEvent[];
 
 export const news = [
+  {
+    slug: "opencode-2-3-mcp-events",
+    title: "OpenCode 2.3 adds experimental MCP events",
+    publishedAt: "2026-11-13",
+    sourceName: "GitHub",
+    sourceUrl: "https://github.com/anomalyco/opencode/releases/tag/v2.3.0",
+    summary:
+      "Behind the mcp_events flag, OpenCode lists and streams events from servers that offer the draft io.modelcontextprotocol/events extension (SEP-3415, still an open PR), and a watch_mcp_event tool wakes a session when one arrives. It is the first client on this board with server-initiated events.",
+  },
+  {
+    slug: "claude-code-code-mode",
+    title: "Claude Code adds an experimental Code Mode",
+    publishedAt: "2026-11-12",
+    sourceName: "Claude Code docs",
+    sourceUrl: "https://code.claude.com/docs/en/code-mode",
+    summary:
+      "Claude Code 2.1.323 adds Code Mode, off by default: with CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1, Claude writes JavaScript that makes several tool calls in one step. The docs show built-in tools such as Bash, Read, and Edit and do not say MCP tools are callable from code, so the board still scores Claude Code no on code mode.",
+  },
+  {
+    slug: "mcp-release-cycle",
+    title: "MCP moves to two spec releases a year; next is 2027-03-30",
+    publishedAt: "2026-11-11",
+    sourceName: "MCP blog",
+    sourceUrl: "https://blog.modelcontextprotocol.io/posts/mcp-release-cycle/",
+    summary:
+      "Specification releases will generally land on the last Tuesday of March and September. The next is targeted for March 30, 2027, as version 2027-03-30.",
+  },
+  {
+    slug: "mcp-files-extension",
+    title: "Draft MCP extension for file uploads and downloads",
+    publishedAt: "2026-11-10",
+    sourceName: "MCP blog",
+    sourceUrl:
+      "https://blog.modelcontextprotocol.io/posts/exploring-file-uploads-and-downloads-in-mcp/",
+    summary:
+      "The experimental io.modelcontextprotocol/files extension works with revision 2026-07-28 and later and moves file bytes outside JSON-RPC: a tool returns an upload request, or download targets in _meta. The authors expect it to be stable before the end of the year. No client on this board implements it.",
+  },
   {
     slug: "factory-droid-script-mode",
     title: "Factory Droid 1.0 makes code mode the default",
@@ -699,7 +741,7 @@ export const news = [
     sourceName: "MCP docs",
     sourceUrl: "https://modelcontextprotocol.io/development/roadmap",
     summary:
-      "The 22 Aug 2026 cycle lists Tasks plus server-initiated events, HTTP-over-stdio, DPoP and agent identity, and protocol-level progressive discovery. Those are SEPs. Claude Code runs Tasks in public beta since 28 Oct; no client on this board implements the rest.",
+      "The 22 Aug 2026 cycle lists Tasks plus server-initiated events, HTTP-over-stdio, DPoP and agent identity, and protocol-level progressive discovery. Those are SEPs. Claude Code runs Tasks in public beta since 28 Oct, and OpenCode 2.3 has experimental server-initiated events behind a flag; no client on this board implements HTTP-over-stdio, DPoP, or progressive discovery.",
   },
   {
     slug: "mcp-spec-2026-07-28",
@@ -754,6 +796,6 @@ export const news = [
     sourceName: "Anthropic",
     sourceUrl: "https://www.anthropic.com/engineering/code-execution-with-mcp",
     summary:
-      "Present MCP servers as code APIs. The model loads the tools it needs and filters results in a sandbox. Cloudflare called the same idea Code Mode. Claude Code still calls tools directly.",
+      "Present MCP servers as code APIs. The model loads the tools it needs and filters results in a sandbox. Cloudflare called the same idea Code Mode. Claude Code added an experimental, opt-in Code Mode in 2.1.323.",
   },
 ] satisfies readonly NewsItem[];
