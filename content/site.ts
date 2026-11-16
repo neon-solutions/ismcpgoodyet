@@ -164,16 +164,17 @@ export const status = {
         "Negotiates 2026-07-28 by default: HTTP servers on every install including Bedrock, Vertex, and Foundry (2.1.274), stdio (2.1.292), claude.ai connectors (2.1.295), cloud sessions and Remote Control connectors (2.1.299). 2.1.302 accepts servers that omit resultType, ttlMs, or cacheScope. 2.1.318 stops re-probing stdio servers that exit on the version probe and pins a server that dies within 3s to the legacy handshake for 7 days. 2.1.319 fixes legacy-handshake servers failing to connect or returning empty results because Claude Code declared an extension it only uses with newer servers. 2.1.323 removes the v1 MCP client; MCP_SDK_GENERATION=v1 now runs the v2 client on the earlier handshake. MCP_PROTOCOL_NEGOTIATION=legacy opts out.",
     },
     grok: {
-      status: "no",
+      status: "partial",
       evidenceUrl:
-        "https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-mcp/src/servers.rs",
-      notes: "Grok Build pins the wire to 2025-11-25 so an rmcp bump cannot silently move it.",
+        "https://github.com/xai-org/grok-build/blob/2bdd1d6a6369de0e8c68132ea4539e9abd9e14a8/crates/codegen/xai-grok-mcp/src/servers.rs",
+      notes:
+        "Public source checked 2026-11-16 probes server/discover for 2026-07-28 on HTTP (including OAuth) and the ACP bridge for in-process SDK servers, with legacy fallback. Stdio stays on the 2025-11-25 initialize handshake; modern-only stdio servers are unsupported. Shipping version not verified.",
     },
     opencode: {
       status: "partial",
       evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers#protocol-version",
       notes:
-        "OpenCode 2.2 adds a per-server protocol: legacy (default), auto, or 2026-07-28. auto probes server/discover and falls back to initialize; 2.2.6 also falls back for stdio servers that ignore the probe. OpenCode 1 still uses the initialize handshake.",
+        "OpenCode 2.2 adds a per-server protocol: legacy (default), auto, or 2026-07-28. auto probes server/discover and falls back to initialize; 2.2.6 also falls back for stdio servers that ignore the probe. Opt-in pool: true (2.2.6) shares matching connections across directories only on 2026-07-28; an unset protocol then means auto. OpenCode 1 still uses the initialize handshake.",
     },
     "factory-droid": {
       status: "no",
@@ -191,9 +192,9 @@ export const status = {
     },
     cursor: {
       status: "partial",
-      evidenceUrl: "https://cursor.com/docs/mcp",
+      evidenceUrl: "https://cursor.com/docs/release-notes",
       notes:
-        "Support table lists Elicitation. Documented as JSON-schema forms. URL mode and 2026 MRTR not documented. ~60s timeout reported.",
+        "Input forms in agent chat. IDE 3.27 (Oct 22) fixes scrolling and clicking Submit or Cancel. URL mode and 2026 MRTR not documented.",
     },
     "claude-code": {
       status: "yes",
@@ -205,8 +206,9 @@ export const status = {
     grok: {
       status: "yes",
       evidenceUrl:
-        "https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-mcp/src/servers.rs",
-      notes: "Client advertises form (with schema validation) and URL elicitation.",
+        "https://github.com/xai-org/grok-build/blob/2bdd1d6a6369de0e8c68132ea4539e9abd9e14a8/crates/codegen/xai-grok-mcp/src/servers.rs",
+      notes:
+        "Form (with schema validation) and URL elicitation when an input handler is attached; not advertised on ACP connections. Public source handles legacy elicitation/create and 2026-07-28 input_required round trips, including polling while a URL flow is pending. Stdio remains legacy-only.",
     },
     opencode: {
       status: "yes",
@@ -238,7 +240,7 @@ export const status = {
       status: "partial",
       evidenceUrl: "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
       notes:
-        "Public beta in the CLI since 2.1.304. Polls tasks/get, answers input_required through tasks/update, and cancels with tasks/cancel. 2.1.319 moves a task to the background at once and runs Tasks on Bedrock, Vertex, Foundry, and LLM gateways without feature-flag fetching. tasks/list and task notifications are unused.",
+        "Public beta in the CLI since 2.1.304. Polls tasks/get, answers input_required through tasks/update, and cancels with tasks/cancel. 2.1.319 moves a task to the background at once and runs Tasks on Bedrock, Vertex, Foundry, and LLM gateways without feature-flag fetching. 2.1.325 makes Esc on a background task question mean answer later; Enter in /tasks reopens it. Polling resumes after a later call reconnects the server. tasks/list and task notifications are unused.",
     },
     grok: {
       status: "no",
@@ -315,7 +317,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://code.claude.com/docs/en/agent-sdk/tool-search.md",
       notes:
-        "Tool Search is on by default. Definitions are withheld; the agent gets a summary and loads up to five matches. alwaysLoad keeps a tool in the prompt; alwaysLoad: false on a server defers all its tools (2.1.287). Foundry and some Vertex or proxy hosts load everything.",
+        "Tool Search is on by default. Definitions are withheld; the agent gets a summary and loads up to five matches. alwaysLoad keeps a tool in the prompt; alwaysLoad: false on a server defers all its tools (2.1.287). Azure-hosted Foundry and unsupported models load upfront. Gateways default to search since 2.1.304, with fallback if they reject it. 2.1.325 raises tool-search descriptions in new cloud sessions from 4,096 to 16,384 characters, matching other sessions.",
     },
     grok: {
       status: "yes",
@@ -504,7 +506,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://cursor.com/docs/mcp",
       notes:
-        "Marketplace Add to Cursor runs OAuth. Static CLIENT_ID/SECRET in mcp.json. CLI: agent mcp login. Cloud OAuth is per user on Cursor's backend. Servers that reject local redirect URLs sign in through a Cursor-hosted callback page (Oct 9).",
+        "Marketplace Add to Cursor runs OAuth. Static CLIENT_ID/SECRET in mcp.json. CLI: agent mcp login. Cloud OAuth is per user on Cursor's backend. Servers that reject local redirect URLs sign in through a Cursor-hosted callback page (Oct 9). Cloud Agents show a sign-in card for missing permissions named by the server mid-call, and keep the granted scopes for later sign-ins (Oct 19).",
     },
     "claude-code": {
       status: "yes",
@@ -523,7 +525,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers#client-registration",
       notes:
-        "Automatic for remote servers. Uses a pre-registered client, then CIMD, then DCR (2.2). opencode mcp auth / list / logout.",
+        "Automatic for remote servers. Uses a pre-registered client, then CIMD, then DCR (2.2). opencode mcp auth / list / logout. 2.2.7 keeps rotating-token logins across concurrent refreshes and temporary token-endpoint failures. 2.3.0 fixes refreshes and localhost redirects when a server rewrites 127.0.0.1.",
     },
     "factory-droid": {
       status: "yes",
@@ -622,6 +624,25 @@ export const timeline = [
 ] satisfies readonly TimelineEvent[];
 
 export const news = [
+  {
+    slug: "grok-stateless-http-source",
+    title: "Grok's public source supports stateless MCP on HTTP, not stdio",
+    publishedAt: "2026-11-16",
+    sourceName: "Grok Build source",
+    sourceUrl:
+      "https://github.com/xai-org/grok-build/blob/2bdd1d6a6369de0e8c68132ea4539e9abd9e14a8/crates/codegen/xai-grok-mcp/src/servers.rs",
+    summary:
+      "Verified in public source on 2026-11-16: Grok probes server/discover for revision 2026-07-28 on HTTP, including OAuth, and the ACP bridge for in-process SDK servers, with legacy fallback. It handles elicitation input_required round trips on modern connections with an input handler; ACP does not advertise elicitation. Stdio still uses the 2025-11-25 initialize handshake. The shipping version is not verified, so the board scores stateless support partial.",
+  },
+  {
+    slug: "claude-code-mcp-task-recovery",
+    title: "Claude Code 2.1.325 lets MCP task questions wait for you",
+    publishedAt: "2026-11-13",
+    sourceName: "Claude Code release notes",
+    sourceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.325",
+    summary:
+      "Esc on a background MCP task's question now means answer later: nothing is sent to the server, and Enter in /tasks reopens the question. Background tasks resume polling after a later call reconnects the server, and questions wait until you send or clear a draft. New cloud sessions also load up to 16,384 characters per tool-search description instead of 4,096. Tasks remains public beta and partial on the board.",
+  },
   {
     slug: "opencode-2-3-mcp-events",
     title: "OpenCode 2.3 adds experimental MCP events",
