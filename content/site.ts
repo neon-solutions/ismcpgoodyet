@@ -180,15 +180,16 @@ export const status = {
       status: "no",
       evidenceUrl: "https://docs.factory.com/harness/mcp",
       notes:
-        "No public 2026-07-28 claim. 1.0.0 carries 2026-07-28 negotiation behind a server-side flag that is off.",
+        "MCP docs describe stdio, Streamable HTTP, and legacy SSE. No public 2026-07-28 support claim.",
     },
   },
   elicitation: {
     codex: {
       status: "yes",
-      evidenceUrl: "https://developers.openai.com/codex/app-server",
+      evidenceUrl:
+        "https://github.com/openai/codex/blob/rust-v0.169.0/codex-rs/rmcp-client/src/rmcp_client.rs",
       notes:
-        "elicitation/create surfaces as mcpServer/elicitation/request. Form, URL, and openai/form. Opt-in 2026-07-28 MRTR InputRequiredResult currently errors (issue 40657).",
+        "elicitation/create surfaces as mcpServer/elicitation/request. Form, URL, and openai/form. Tagged 0.169.0 source routes opt-in 2026-07-28 tool calls through input_required handling, answers input requests, and retries with request state.",
     },
     cursor: {
       status: "partial",
@@ -198,10 +199,9 @@ export const status = {
     },
     "claude-code": {
       status: "yes",
-      evidenceUrl:
-        "https://code.claude.com/docs/en/mcp#respond-to-mcp-elicitation-requests",
+      evidenceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.326",
       notes:
-        "Form or URL dialogs appear automatically. Cloud sessions show a form card (2.1.316). Elicitation hooks and Agent SDK onElicitation can answer without a dialog.",
+        "Form or URL dialogs appear automatically. Cloud sessions show a form card (2.1.316). Elicitation hooks and Agent SDK onElicitation can answer without a dialog. 2.1.326 fixes Tab and Shift+Tab navigation between form fields and clears a required field's tick when emptied.",
     },
     grok: {
       status: "yes",
@@ -315,9 +315,9 @@ export const status = {
     },
     "claude-code": {
       status: "yes",
-      evidenceUrl: "https://code.claude.com/docs/en/agent-sdk/tool-search.md",
+      evidenceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.326",
       notes:
-        "Tool Search is on by default. Definitions are withheld; the agent gets a summary and loads up to five matches. alwaysLoad keeps a tool in the prompt; alwaysLoad: false on a server defers all its tools (2.1.287). Azure-hosted Foundry and unsupported models load upfront. Gateways default to search since 2.1.304, with fallback if they reject it. 2.1.325 raises tool-search descriptions in new cloud sessions from 4,096 to 16,384 characters, matching other sessions.",
+        "Tool Search is on by default. Definitions are withheld; the agent gets a summary and loads up to five matches. alwaysLoad keeps a tool in the prompt; alwaysLoad: false on a server defers all its tools (2.1.287). Azure-hosted Foundry and unsupported models load upfront. Gateways default to search since 2.1.304, with fallback if they reject it. 2.1.325 raises tool-search descriptions in new cloud sessions from 4,096 to 16,384 characters, matching other sessions. 2.1.326 fixes exact-name searches loading another MCP server's tool.",
     },
     grok: {
       status: "yes",
@@ -453,7 +453,7 @@ export const status = {
       status: "no",
       evidenceUrl: "https://docs.factory.com/harness/mcp",
       notes:
-        "No Apps host documented. No io.modelcontextprotocol/ui or text/html;profile=mcp-app in 1.0.0.",
+        "No MCP Apps host documented in the MCP reference.",
     },
   },
   "skills-over-mcp": {
@@ -531,7 +531,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://docs.factory.com/harness/mcp",
       notes:
-        "Remote servers sign in from /mcp in a browser. Discovers the auth server, uses CIMD when supported, falls back to DCR. oauth.clientId/clientSecret for pre-registered clients. Tokens in the system keyring. Adding a server from a session on another computer signs in through your browser (1.3.0).",
+        "Remote servers sign in from /mcp in a browser. droid mcp auth signs in to enabled, policy-allowed HTTP/SSE servers that need authentication, one at a time. Uses CIMD when supported or DCR. Pre-registered oauth.clientId/clientSecret require authorizationServerIssuer. Tokens in the system keyring or a fallback file. Adding a server from a session on another computer signs in through your browser (1.3.0).",
     },
   },
   approvals: {
@@ -624,6 +624,15 @@ export const timeline = [
 ] satisfies readonly TimelineEvent[];
 
 export const news = [
+  {
+    slug: "claude-code-mcp-result-and-form-fixes",
+    title: "Claude Code 2.1.326 fixes MCP result mix-ups and input forms",
+    publishedAt: "2026-11-16",
+    sourceName: "Claude Code release notes",
+    sourceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.326",
+    summary:
+      "Parallel MCP calls no longer read another call's saved result when two long results arrive in the same millisecond. Tool search fixes exact-name lookups loading a different server's tool. Input forms now accept Tab and Shift+Tab between fields and clear a required field's tick when emptied. These are fixes to existing support; the board's statuses stay unchanged.",
+  },
   {
     slug: "grok-stateless-http-source",
     title: "Grok's public source supports stateless MCP on HTTP, not stdio",
