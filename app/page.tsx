@@ -21,7 +21,7 @@ export default function Home() {
   const barWidth = `${Math.round(site.score.ratio * 100)}%`;
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16">
+    <div className="mx-auto max-w-screen-2xl px-6 py-16">
       <header className="max-w-2xl">
         <h1 className="text-4xl font-semibold tracking-tight">
           Is MCP good yet?
@@ -48,16 +48,22 @@ export default function Home() {
       <section className="mt-16">
         <h2 className="text-2xl font-semibold tracking-tight">Scoreboard</h2>
         <div className="mt-6 overflow-x-auto">
-          <table className="w-full min-w-[40rem] border-collapse text-left text-sm">
+          <table className="w-full min-w-[80rem] table-fixed border-collapse text-left">
+            <colgroup>
+              <col className="w-36 sm:w-52" />
+              {site.clients.map((client) => (
+                <col key={client.id} />
+              ))}
+            </colgroup>
             <thead>
               <tr>
-                <th className="border-b border-neutral-900 py-2 pr-4 font-semibold">
+                <th className="sticky left-0 z-10 border-b border-neutral-900 bg-white py-3 pr-4 font-semibold sm:pr-6">
                   Feature
                 </th>
                 {site.clients.map((client) => (
                   <th
                     key={client.id}
-                    className="border-b border-neutral-900 py-2 px-3 font-semibold"
+                    className="border-b border-neutral-900 py-3 px-4 font-semibold"
                   >
                     <a href={client.docsUrl} className="underline">
                       {client.name}
@@ -69,7 +75,7 @@ export default function Home() {
             <tbody>
               {site.features.map((feature) => (
                 <tr key={feature.id}>
-                  <th className="border-b border-neutral-200 py-3 pr-4 align-top font-semibold">
+                  <th className="sticky left-0 z-10 border-b border-neutral-200 bg-white py-5 pr-4 align-top sm:pr-6 font-semibold">
                     {feature.specUrl ? (
                       <a href={feature.specUrl} className="underline">
                         {feature.name}
@@ -77,7 +83,7 @@ export default function Home() {
                     ) : (
                       feature.name
                     )}
-                    <p className="mt-1 font-normal text-neutral-600">
+                    <p className="mt-2 text-sm leading-6 font-normal text-neutral-600">
                       {feature.summary}
                     </p>
                   </th>
@@ -87,17 +93,21 @@ export default function Home() {
                     return (
                       <td
                         key={client.id}
-                        className="border-b border-neutral-200 py-3 px-3 align-top"
+                        className="border-b border-neutral-200 py-5 px-4 align-top"
                       >
-                        {cell.evidenceUrl ? (
-                          <a href={cell.evidenceUrl} className="underline">
-                            {label}
-                          </a>
-                        ) : (
-                          label
-                        )}
+                        <p className="font-semibold">
+                          {cell.evidenceUrl ? (
+                            <a href={cell.evidenceUrl} className="underline">
+                              {label}
+                            </a>
+                          ) : (
+                            label
+                          )}
+                        </p>
                         {cell.notes ? (
-                          <p className="mt-1 text-neutral-600">{cell.notes}</p>
+                          <p className="mt-2 text-[13px] leading-5 break-words text-neutral-600">
+                            {cell.notes}
+                          </p>
                         ) : null}
                       </td>
                     );
