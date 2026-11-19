@@ -276,10 +276,11 @@ export const status = {
         "No shipping Code Mode. Dynamic context discovery loads schemas from files; the model still calls tools directly.",
     },
     "claude-code": {
-      status: "no",
-      evidenceUrl: "https://code.claude.com/docs/en/code-mode",
+      status: "partial",
+      evidenceUrl:
+        "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md#21328",
       notes:
-        "Claude Code connects MCP servers and calls their tools (Tool Search when the catalog is large). 2.1.323 adds an experimental, off-by-default Code Mode (CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1) where Claude writes JavaScript that calls its tools in one step; the docs show only built-in tools such as Bash, Read, and Edit, not MCP tools. Terminal sessions on a Claude subscription or Console account only; not through a gateway, Bedrock, Vertex, or Foundry.",
+        "Experimental and off by default (CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1). 2.1.328 fixes failed MCP calls in auto/bypass scripts when a server connected during the previous script, and improves MCP prompt caching and server-list notifications. Interactive terminal, Claude subscription or Console, Opus 5.5 / Sonnet 5.5 / Haiku 5.5 / Fable 5.2; not via gateway, Bedrock, Vertex, or Foundry.",
     },
     grok: {
       status: "no",
@@ -668,7 +669,7 @@ export const news = [
     sourceName: "Claude Code docs",
     sourceUrl: "https://code.claude.com/docs/en/code-mode",
     summary:
-      "Claude Code 2.1.323 adds Code Mode, off by default: with CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1, Claude writes JavaScript that makes several tool calls in one step. The docs show built-in tools such as Bash, Read, and Edit and do not say MCP tools are callable from code, so the board still scores Claude Code no on code mode.",
+      "Verified 2026-11-18: Code Mode, introduced in 2.1.323, remains experimental and off by default. The 2.1.328 changelog confirms MCP calls from scripts with a fix for servers connected during the previous script, plus MCP prompt caching and server-list notifications. The board now scores Claude Code partial, like Codex's opt-in code mode.",
   },
   {
     slug: "mcp-release-cycle",
@@ -826,6 +827,6 @@ export const news = [
     sourceName: "Anthropic",
     sourceUrl: "https://www.anthropic.com/engineering/code-execution-with-mcp",
     summary:
-      "Present MCP servers as code APIs. The model loads the tools it needs and filters results in a sandbox. Cloudflare called the same idea Code Mode. Claude Code added an experimental, opt-in Code Mode in 2.1.323.",
+      "Present MCP servers as code APIs. The model loads the tools it needs and filters results in a sandbox. Cloudflare called the same idea Code Mode. Claude Code added experimental, opt-in Code Mode in 2.1.323; the 2.1.328 changelog confirms MCP calls from scripts, so the board scores it partial.",
   },
 ] satisfies readonly NewsItem[];
