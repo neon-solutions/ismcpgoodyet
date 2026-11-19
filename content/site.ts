@@ -62,6 +62,16 @@ export const features = [
     shippedAt: "2025-11-25",
   },
   {
+    id: "push-events",
+    name: "Push events",
+    kind: "spec",
+    summary:
+      "A server pushes an event to the model or wakes its session without a tool call per event. A watch may need setup; list-change notifications alone do not count. SEP-3415 is a draft Events extension in the Tasks and Events working group.",
+    specUrl:
+      "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/3415",
+    shippedAt: "2026-10-05",
+  },
+  {
     id: "tasks",
     name: "Tasks",
     kind: "spec",
@@ -221,6 +231,47 @@ export const status = {
       evidenceUrl: "https://docs.factory.com/changelog/release-notes",
       notes:
         "Elicitation prompts from MCP tools appear and resume after an interruption (0.112.0). MCP docs do not cover it; form vs URL mode is not documented.",
+    },
+  },
+  "push-events": {
+    codex: {
+      status: "no",
+      evidenceUrl:
+        "https://github.com/openai/codex/blob/rust-v0.169.0/codex-rs/app-server/src/request_processors/mcp_event_stream.rs",
+      notes:
+        "0.169.0 forwards hosted-app event streams to app-server callers. Delivery to the model or session wake-up is not established by this path; custom MCP servers are rejected. Checked 2026-11-18.",
+    },
+    cursor: {
+      status: "no",
+      evidenceUrl: "https://cursor.com/docs/mcp",
+      notes:
+        "MCP docs and release notes checked 2026-11-18 do not document server events reaching the model or waking its session.",
+    },
+    "claude-code": {
+      status: "partial",
+      evidenceUrl:
+        "https://code.claude.com/docs/en/mcp#push-messages-with-channels",
+      notes:
+        "Research-preview Channels push messages into a running session via claude/channel and --channels. Requires Anthropic auth; Team/Enterprise and managed Console orgs need admin enablement. On the v2 runtime, channel servers must use the earlier handshake: 2026-07-28 servers cannot register. No io.modelcontextprotocol/events support documented as of 2026-11-18.",
+    },
+    grok: {
+      status: "no",
+      evidenceUrl: "https://docs.x.ai/build/features/mcp-servers",
+      notes:
+        "MCP docs checked 2026-11-18 describe tools and server setup, with no documented push-to-model or session-wake support. Changelog verification unavailable.",
+    },
+    opencode: {
+      status: "partial",
+      evidenceUrl:
+        "https://github.com/anomalyco/opencode/blob/v2.3.0/packages/core/src/tool/plugin/mcp-events.ts",
+      notes:
+        "2.3 adds experimental draft Events support behind mcp_events. watch_mcp_event sets up a watch, then a server event wakes the session. Defaults to one event; once: false keeps watching without a tool call per event.",
+    },
+    "factory-droid": {
+      status: "no",
+      evidenceUrl: "https://docs.factory.com/harness/mcp",
+      notes:
+        "MCP docs and release notes checked 2026-11-18 do not document server events reaching the model or waking its session. SSE transport support alone does not establish this.",
     },
   },
   tasks: {
@@ -618,6 +669,11 @@ export const timeline = [
     href: "https://modelcontextprotocol.io/development/roadmap",
   },
   {
+    date: "2026-10-05",
+    title: "Draft Events extension proposed (SEP-3415)",
+    href: "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/3415",
+  },
+  {
     date: "2026-11-11",
     title: "MCP moves to two spec releases a year",
     href: "https://blog.modelcontextprotocol.io/posts/mcp-release-cycle/",
@@ -660,7 +716,7 @@ export const news = [
     sourceName: "GitHub",
     sourceUrl: "https://github.com/anomalyco/opencode/releases/tag/v2.3.0",
     summary:
-      "Behind the mcp_events flag, OpenCode lists and streams events from servers that offer the draft io.modelcontextprotocol/events extension (SEP-3415, still an open PR), and a watch_mcp_event tool wakes a session when one arrives. It is the first client on this board with server-initiated events.",
+      "Behind the mcp_events flag, OpenCode lists and streams events from servers that offer the draft io.modelcontextprotocol/events extension (SEP-3415, still an open PR), and a watch_mcp_event tool wakes a session when one arrives.",
   },
   {
     slug: "claude-code-code-mode",
