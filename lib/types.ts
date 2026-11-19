@@ -13,6 +13,7 @@ export type ClientId =
 export type FeatureId =
   | "stateless-2026-07-28"
   | "elicitation"
+  | "push-events"
   | "tasks"
   | "code-mode"
   | "dynamic-load"
