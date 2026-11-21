@@ -66,10 +66,9 @@ export const features = [
     name: "Push events",
     kind: "spec",
     summary:
-      "A server pushes an event to the model or wakes its session without a tool call per event. A watch may need setup; list-change notifications alone do not count. SEP-3415 is a draft Events extension in the Tasks and Events working group.",
-    specUrl:
-      "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/3415",
-    shippedAt: "2026-10-05",
+      "A server pushes an event to the model or wakes its session without a tool call per event. A watch may need setup; list-change notifications alone do not count. SEP-3415 is Final; the official Events extension is Beta and defines poll, push, and webhook delivery.",
+    specUrl: "https://modelcontextprotocol.io/extensions/events/overview",
+    shippedAt: "2026-11-19",
   },
   {
     id: "tasks",
@@ -161,11 +160,10 @@ export const status = {
         "Opt-in mcp_2026_07_28. Default remains 2025-06-18. Stdio also needs CODEX_MCP_PROTOCOL_VERSION, or the off-by-default mcp_connection_sharing feature, which probes eligible local stdio servers (0.166.0).",
     },
     cursor: {
-      status: "no",
-      evidenceUrl:
-        "https://forum.cursor.com/t/stdio-mcp-oracle-sqlcl-dies-after-parallel-reconnect-and-resource-subscribe-with-failed-to-enqueue-message/166799",
+      status: "partial",
+      evidenceUrl: "https://cursor.com/docs/release-notes/ide",
       notes:
-        "No public 2026-07-28 claim. Forum reports still show pre-stateless protocol versions.",
+        "IDE 3.30 (Nov 12) connects servers that only support the newer stateless handshake. The release does not name the revision or establish CLI and Cloud parity. Verified 2026-11-21.",
     },
     "claude-code": {
       status: "yes",
@@ -263,9 +261,9 @@ export const status = {
     opencode: {
       status: "partial",
       evidenceUrl:
-        "https://github.com/anomalyco/opencode/blob/v2.3.0/packages/core/src/tool/plugin/mcp-events.ts",
+        "https://github.com/anomalyco/opencode/releases/tag/v2.3.1",
       notes:
-        "2.3 adds experimental draft Events support behind mcp_events. watch_mcp_event sets up a watch, then a server event wakes the session. Defaults to one event; once: false keeps watching without a tool call per event.",
+        "2.3 adds experimental Events support behind mcp_events. watch_mcp_event wakes the session on an event; once: false keeps watching. 2.3.1 adds event-triggered automations behind automations and mcp_events: send a prompt to a session or subagent, or run Code Mode that decides whether to send one. These releases predate SEP-3415 Final.",
     },
     "factory-droid": {
       status: "no",
@@ -291,7 +289,7 @@ export const status = {
       status: "partial",
       evidenceUrl: "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
       notes:
-        "Public beta in the CLI since 2.1.304. Polls tasks/get, answers input_required through tasks/update, and cancels with tasks/cancel. 2.1.319 moves a task to the background at once and runs Tasks on Bedrock, Vertex, Foundry, and LLM gateways without feature-flag fetching. 2.1.325 makes Esc on a background task question mean answer later; Enter in /tasks reopens it. Polling resumes after a later call reconnects the server. tasks/list and task notifications are unused.",
+        "Public beta in the CLI since 2.1.304. Polls tasks/get, answers input_required through tasks/update, and cancels with tasks/cancel. 2.1.319 moves a task to the background at once and runs Tasks on Bedrock, Vertex, Foundry, and LLM gateways without feature-flag fetching. 2.1.325 makes Esc on a background task question mean answer later; Enter in /tasks reopens it. 2.1.329 automatically reconnects most HTTP servers left on an older protocol after a slow reconnect. 2.1.330 follows a task when its session moves to the background, except for stdio servers or servers with headers. tasks/list and task notifications are unused.",
     },
     grok: {
       status: "no",
@@ -329,9 +327,9 @@ export const status = {
     "claude-code": {
       status: "partial",
       evidenceUrl:
-        "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md#21328",
+        "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
       notes:
-        "Experimental and off by default (CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1). 2.1.328 fixes failed MCP calls in auto/bypass scripts when a server connected during the previous script, and improves MCP prompt caching and server-list notifications. Interactive terminal, Claude subscription or Console, Opus 5.5 / Sonnet 5.5 / Haiku 5.5 / Fable 5.2; not via gateway, Bedrock, Vertex, or Foundry.",
+        "Experimental and off by default (CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1). 2.1.329 makes scripts wait up to ten minutes for most long MCP calls instead of receiving a background marker, and pauses the script limit while an MCP form or link prompt waits. 2.1.330 honors MCP end-turn requests in auto/bypass scripts. Interactive terminal, Claude subscription or Console, Opus 5.5 / Sonnet 5.5 / Haiku 5.5 / Fable 5.2; not via gateway, Bedrock, Vertex, or Foundry.",
     },
     grok: {
       status: "no",
@@ -381,9 +379,9 @@ export const status = {
     opencode: {
       status: "yes",
       evidenceUrl:
-        "https://github.com/anomalyco/opencode/blob/v2.2.3/packages/core/src/codemode/catalog.ts",
+        "https://github.com/anomalyco/opencode/releases/tag/v2.3.1",
       notes:
-        "Under default Code Mode (2.2) the prompt gets a catalog capped at about 2,000 tokens; search(...) returns signatures for omitted tools. 2.2.7 sends only what changed when servers connect, disconnect, or change tools. Servers with codemode: false still load full schemas.",
+        "Under default Code Mode (2.2) the prompt gets a catalog capped at about 2,000 tokens; search(...) returns signatures for omitted tools. 2.2.7 sends only what changed when servers connect, disconnect, or change tools. 2.3.1 raises each catalog tool summary's limit from 120 to 500 characters. Servers with codemode: false still load full schemas.",
     },
     "factory-droid": {
       status: "yes",
@@ -407,9 +405,9 @@ export const status = {
     "claude-code": {
       status: "yes",
       evidenceUrl:
-        "https://code.claude.com/docs/en/agent-sdk/permissions#allow-and-deny-rules",
+        "https://github.com/anthropics/claude-code/releases/tag/v2.1.330",
       notes:
-        "disallowedTools can hide a tool. disabledMcpServers / allowedMcpServers / deniedMcpServers filter servers. allowedTools is auto-approval, not visibility, unless dontAsk.",
+        "disallowedTools can hide a tool. disabledMcpServers / allowedMcpServers / deniedMcpServers filter servers. allowedTools is auto-approval, not visibility, unless dontAsk. Since 2.1.330, a deniedMcpServers name entry hides only that named claude.ai connector; deny its exact URL to block every connector at that URL.",
     },
     grok: {
       status: "yes",
@@ -550,9 +548,9 @@ export const status = {
   oauth: {
     codex: {
       status: "yes",
-      evidenceUrl: "https://github.com/openai/codex/pull/38089",
+      evidenceUrl: "https://github.com/openai/codex/releases/tag/rust-v0.171.0",
       notes:
-        "codex mcp login opens a browser; /mcp login <name> does it from the TUI (0.161.0). Remote servers default to auth=oauth. Registration auto prefers CIMD, falls back to DCR. --oauth-client-secret for pre-registered clients (0.158.0). 0.164.0 adds enterprise-managed authorization and requests the resource's scopes, not the authorization server's full list.",
+        "codex mcp login opens a browser; /mcp login <name> does it from the TUI (0.161.0). Remote servers default to auth=oauth. Registration auto prefers CIMD, falls back to DCR. --oauth-client-secret for pre-registered clients (0.158.0). 0.164.0 adds enterprise-managed authorization and requests the resource's scopes, not the authorization server's full list. 0.170.0 fixes credential races during cancellation, login, and logout. 0.171.0 supports enterprise identity providers that issue ID tokens without refresh tokens.",
     },
     cursor: {
       status: "yes",
@@ -565,7 +563,7 @@ export const status = {
       evidenceUrl:
         "https://code.claude.com/docs/en/mcp#authenticate-with-remote-mcp-servers",
       notes:
-        "/mcp or claude mcp login. Discovers CIMD; DCR and pre-configured client id/secret also work. Prompts to re-authenticate when a server asks for more scope mid-call (2.1.288). Agent SDK does not open a browser; pass Authorization.",
+        "/mcp or claude mcp login. Discovers CIMD; DCR and pre-configured client id/secret also work. Prompts to re-authenticate when a server asks for more scope mid-call (2.1.288). Agent SDK does not open a browser: sign in interactively first to reuse stored OAuth credentials, or pass Authorization.",
     },
     grok: {
       status: "yes",
@@ -581,9 +579,9 @@ export const status = {
     },
     "factory-droid": {
       status: "yes",
-      evidenceUrl: "https://docs.factory.com/harness/mcp",
+      evidenceUrl: "https://docs.factory.com/changelog/release-notes",
       notes:
-        "Remote servers sign in from /mcp in a browser. droid mcp auth signs in to enabled, policy-allowed HTTP/SSE servers that need authentication, one at a time. Uses CIMD when supported or DCR. Pre-registered oauth.clientId/clientSecret require authorizationServerIssuer. Tokens in the system keyring or a fallback file. Adding a server from a session on another computer signs in through your browser (1.3.0).",
+        "Remote servers sign in from /mcp in a browser. droid mcp auth signs in to enabled, policy-allowed HTTP/SSE servers that need authentication, one at a time. Uses CIMD when supported or DCR. Pre-registered oauth.clientId/clientSecret require authorizationServerIssuer. Tokens in the system keyring or a fallback file. Adding a server from a session on another computer signs in through your browser (1.3.0). 1.16.0 makes authorization links clickable in MCP views and command output.",
     },
   },
   approvals: {
@@ -678,9 +676,86 @@ export const timeline = [
     title: "MCP moves to two spec releases a year",
     href: "https://blog.modelcontextprotocol.io/posts/mcp-release-cycle/",
   },
+  {
+    date: "2026-11-19",
+    title: "SEP-3415 Final; Events extension in Beta",
+    href: "https://modelcontextprotocol.io/extensions/events/overview",
+  },
 ] satisfies readonly TimelineEvent[];
 
 export const news = [
+  {
+    slug: "claude-code-mcp-background-handoff",
+    title: "Claude Code 2.1.330 keeps MCP tasks running across background handoffs",
+    publishedAt: "2026-11-20",
+    sourceName: "Claude Code release notes",
+    sourceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.330",
+    summary:
+      "Moving a session to the background no longer reports its MCP task as stopped: the background session follows it, except when the server uses stdio or sets headers. Shared subagent MCP servers stay connected until their remaining users finish. The release also fixes missing @-mentioned connector and plugin resources, rejected input schemas failing turns, and Code Mode ignoring MCP end-turn requests in auto or bypass mode. Denying a connector by name now blocks only that name; deny its exact URL to block every connector there.",
+  },
+  {
+    slug: "factory-droid-mcp-auth-links",
+    title: "Factory Droid 1.16 makes MCP sign-in links clickable",
+    publishedAt: "2026-11-20",
+    sourceName: "Factory release notes",
+    sourceUrl: "https://docs.factory.com/changelog/release-notes",
+    summary:
+      "MCP authorization links are now clickable in MCP views and command output. This improves the existing browser sign-in flow; OAuth remains Yes on the board.",
+  },
+  {
+    slug: "mcp-events-beta",
+    title: "MCP Events becomes an official Beta extension",
+    publishedAt: "2026-11-19",
+    sourceName: "MCP",
+    sourceUrl: "https://modelcontextprotocol.io/extensions/events/overview",
+    summary:
+      "SEP-3415 reached Final on November 19. The official io.modelcontextprotocol/events extension is Beta and defines event discovery plus poll, push, and webhook delivery, with cursors for resumption. OpenCode's experimental event watches predate finalization; the board keeps them Partial. Claude Code Channels remain a separate client capability.",
+  },
+  {
+    slug: "claude-code-mcp-reconnect-and-code-mode",
+    title: "Claude Code 2.1.329 repairs MCP task recovery and Code Mode waits",
+    publishedAt: "2026-11-19",
+    sourceName: "Claude Code release notes",
+    sourceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.329",
+    summary:
+      "Background MCP tasks no longer stall after a slow reconnect leaves most HTTP servers on an older protocol version: Claude Code reconnects them automatically. Code Mode scripts wait up to ten minutes for most long MCP calls instead of receiving a moved-to-background message, and an MCP form or link prompt no longer consumes that script limit. The release also stops a pending token refresh from restoring a cleared MCP login and reports tools that could not be loaded in tool-search sessions.",
+  },
+  {
+    slug: "codex-enterprise-mcp-without-refresh-token",
+    title: "Codex 0.171 fixes enterprise MCP sign-in without refresh tokens",
+    publishedAt: "2026-11-19",
+    sourceName: "Codex release notes",
+    sourceUrl: "https://github.com/openai/codex/releases/tag/rust-v0.171.0",
+    summary:
+      "Enterprise MCP sign-in now works with identity providers that issue ID tokens without refresh tokens. This repairs the existing enterprise-managed authorization flow; OAuth remains Yes on the board.",
+  },
+  {
+    slug: "opencode-mcp-event-automations",
+    title: "OpenCode 2.3.1 lets MCP events trigger automations",
+    publishedAt: "2026-11-17",
+    sourceName: "OpenCode release notes",
+    sourceUrl: "https://github.com/anomalyco/opencode/releases/tag/v2.3.1",
+    summary:
+      "Experimental automations can react to a pushed MCP event by sending a prompt to a session or a new subagent, or by running Code Mode that decides whether to send one. Event watches require both automations and mcp_events; support stays Partial. Code Mode catalog tool summaries also grow from 120 to 500 characters, and search accepts a string as shorthand.",
+  },
+  {
+    slug: "codex-mcp-oauth-races",
+    title: "Codex 0.170 fixes MCP credential races",
+    publishedAt: "2026-11-17",
+    sourceName: "Codex release notes",
+    sourceUrl: "https://github.com/openai/codex/releases/tag/rust-v0.170.0",
+    summary:
+      "MCP OAuth credential writes and refreshes now handle cancellation, login, and logout races. The release also adds experimental separation of identically named MCP servers across environments.",
+  },
+  {
+    slug: "cursor-cli-mcp-resource-permissions",
+    title: "Cursor CLI checks MCP resource saves and connects local worker servers",
+    publishedAt: "2026-11-17",
+    sourceName: "Cursor CLI release notes",
+    sourceUrl: "https://cursor.com/docs/cli/changelog",
+    summary:
+      "MCP resource downloads follow file-write rules and approvals, must stay inside the workspace, and are refused in Ask and Plan modes. Self-hosted workers now connect URL servers in ~/.cursor/mcp.json at localhost, 127.0.0.1, or [::1]; other URL servers still run on Cursor's backend.",
+  },
   {
     slug: "claude-code-mcp-result-and-form-fixes",
     title: "Claude Code 2.1.326 fixes MCP result mix-ups and input forms",
@@ -716,7 +791,16 @@ export const news = [
     sourceName: "GitHub",
     sourceUrl: "https://github.com/anomalyco/opencode/releases/tag/v2.3.0",
     summary:
-      "Behind the mcp_events flag, OpenCode lists and streams events from servers that offer the draft io.modelcontextprotocol/events extension (SEP-3415, still an open PR), and a watch_mcp_event tool wakes a session when one arrives.",
+      "Behind the mcp_events flag, OpenCode lists and streams events from servers that offer io.modelcontextprotocol/events, and a watch_mcp_event tool wakes a session when one arrives. This release implemented the draft; SEP-3415 reached Final on November 19, with the extension in Beta.",
+  },
+  {
+    slug: "cursor-ide-stateless-connections",
+    title: "Cursor IDE 3.30 connects stateless-only MCP servers",
+    publishedAt: "2026-11-12",
+    sourceName: "Cursor IDE release notes",
+    sourceUrl: "https://cursor.com/docs/release-notes/ide",
+    summary:
+      "Verified 2026-11-21: the November 12 IDE release says MCP servers that only support the newer stateless handshake now connect. It also retries connections cut off mid-response and tolerates non-JSON output from stdio servers. The release does not name the protocol revision or establish CLI and Cloud parity, so stateless support moves from No to Partial.",
   },
   {
     slug: "claude-code-code-mode",
