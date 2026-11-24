@@ -179,10 +179,10 @@ export const status = {
         "Public source checked 2026-11-16 probes server/discover for 2026-07-28 on HTTP (including OAuth) and the ACP bridge for in-process SDK servers, with legacy fallback. Stdio stays on the 2025-11-25 initialize handshake; modern-only stdio servers are unsupported. Shipping version not verified.",
     },
     opencode: {
-      status: "partial",
-      evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers#protocol-version",
+      status: "yes",
+      evidenceUrl: "https://github.com/anomalyco/opencode/releases/tag/v2.4.0",
       notes:
-        "OpenCode 2.2 adds a per-server protocol: legacy (default), auto, or 2026-07-28. auto probes server/discover and falls back to initialize; 2.2.6 also falls back for stdio servers that ignore the probe. Opt-in pool: true (2.2.6) shares matching connections across directories only on 2026-07-28; an unset protocol then means auto. OpenCode 1 still uses the initialize handshake.",
+        "2.4 defaults local and remote servers to auto: probes server/discover for 2026-07-28, then falls back to the legacy handshake. Stdio servers that exit on the probe are restarted once on legacy; HTTP probe timeouts also retry on legacy. protocol: legacy remains an escape hatch. Opt-in pool: true shares matching 2026-07-28 connections across directories. OpenCode 2.2 required protocol opt-in; OpenCode 1 still uses initialize.",
     },
     "factory-droid": {
       status: "no",
@@ -261,9 +261,9 @@ export const status = {
     opencode: {
       status: "partial",
       evidenceUrl:
-        "https://github.com/anomalyco/opencode/releases/tag/v2.3.1",
+        "https://github.com/anomalyco/opencode/releases/tag/v2.4.0",
       notes:
-        "2.3 adds experimental Events support behind mcp_events. watch_mcp_event wakes the session on an event; once: false keeps watching. 2.3.1 adds event-triggered automations behind automations and mcp_events: send a prompt to a session or subagent, or run Code Mode that decides whether to send one. These releases predate SEP-3415 Final.",
+        "2.4 ships Events Beta push delivery on 2026-07-28 with argument checks, heartbeats and reconnects. Event-triggered automations can send a prompt or run Code Mode or a shell command. mcp_events is removed; automations are on by default and automations: false disables watches. Poll and webhook delivery are absent. The tagged client API still labels Events experimental, so support stays Partial.",
     },
     "factory-droid": {
       status: "no",
@@ -287,9 +287,9 @@ export const status = {
     },
     "claude-code": {
       status: "partial",
-      evidenceUrl: "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
+      evidenceUrl: "https://code.claude.com/docs/en/mcp#mcp-tasks-that-run-on-the-server",
       notes:
-        "Public beta in the CLI since 2.1.304. Polls tasks/get, answers input_required through tasks/update, and cancels with tasks/cancel. 2.1.319 moves a task to the background at once and runs Tasks on Bedrock, Vertex, Foundry, and LLM gateways without feature-flag fetching. 2.1.325 makes Esc on a background task question mean answer later; Enter in /tasks reopens it. 2.1.329 automatically reconnects most HTTP servers left on an older protocol after a slow reconnect. 2.1.330 follows a task when its session moves to the background, except for stdio servers or servers with headers. tasks/list and task notifications are unused.",
+        "CLI since 2.1.304: polls tasks/get, answers input_required through tasks/update and cancels with tasks/cancel. Interactive terminals also work without feature-flag fetching on cloud providers and gateways. Esc defers a question; Enter in /tasks reopens it. HTTP reconnect and background handoff recovery exclude some servers. 2.1.331 adds eligible non-fork subagents and VS Code/local Desktop sessions with feature-flag fetching. Those apps cannot show task questions; an accepting Elicitation hook is needed to avoid cancellation. Desktop connectors and claude_desktop_config.json servers get no tasks. Cloud sessions support eligible claude.ai connectors, not project/plugin servers or cloud scheduled tasks. tasks/list and task notifications remain unused. Verified 2026-11-24.",
     },
     grok: {
       status: "no",
@@ -327,9 +327,9 @@ export const status = {
     "claude-code": {
       status: "partial",
       evidenceUrl:
-        "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md",
+        "https://code.claude.com/docs/en/code-mode",
       notes:
-        "Experimental and off by default (CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1). 2.1.329 makes scripts wait up to ten minutes for most long MCP calls instead of receiving a background marker, and pauses the script limit while an MCP form or link prompt waits. 2.1.330 honors MCP end-turn requests in auto/bypass scripts. Interactive terminal, Claude subscription or Console, Opus 5.5 / Sonnet 5.5 / Haiku 5.5 / Fable 5.2; not via gateway, Bedrock, Vertex, or Foundry.",
+        "Experimental and off by default (CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1). 2.1.329 waits up to ten minutes for most long MCP calls and pauses the script limit for input prompts; 2.1.330 honors MCP end-turn requests in auto/bypass scripts. Interactive terminal with Opus 5.5 / Sonnet 5.5 / Haiku 5.5 / Fable 5.2. 2.1.331 adds Bedrock, Google Agent Platform, Foundry and Claude Platform on AWS alongside subscription/Console accounts. Gateways, Claude for Government, HIPAA and ZDR remain unsupported; Enterprise Admin Console provider sign-in has further restrictions.",
     },
     grok: {
       status: "no",
@@ -359,15 +359,15 @@ export const status = {
     },
     cursor: {
       status: "yes",
-      evidenceUrl: "https://cursor.com/blog/dynamic-context-discovery",
+      evidenceUrl: "https://cursor.com/docs/release-notes/ide",
       notes:
-        "Turn 1 is tool names only. Full descriptions are files in a folder per server; the agent reads or greps them. Not a tool_search API. agent mcp list-tools is a human listing.",
+        "Turn 1 is tool names only; full descriptions live in files per server and load on demand. IDE 3.30 tool search matches descriptions as well as server/tool names and reports servers still starting or failing to connect. agent mcp list-tools is a human listing. Verified 2026-11-24.",
     },
     "claude-code": {
       status: "yes",
-      evidenceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.326",
+      evidenceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.331",
       notes:
-        "Tool Search is on by default. Definitions are withheld; the agent gets a summary and loads up to five matches. alwaysLoad keeps a tool in the prompt; alwaysLoad: false on a server defers all its tools (2.1.287). Azure-hosted Foundry and unsupported models load upfront. Gateways default to search since 2.1.304, with fallback if they reject it. 2.1.325 raises tool-search descriptions in new cloud sessions from 4,096 to 16,384 characters, matching other sessions. 2.1.326 fixes exact-name searches loading another MCP server's tool.",
+        "Tool Search is on by default. Definitions are withheld; the agent gets a summary and loads up to five matches. alwaysLoad keeps a tool in the prompt; alwaysLoad: false on a server defers all its tools (2.1.287). Azure-hosted Foundry and unsupported models load upfront. Gateways default to search since 2.1.304, with fallback if they reject it. 2.1.325 raises tool-search descriptions in new cloud sessions from 4,096 to 16,384 characters, matching other sessions. 2.1.326 fixes exact-name searches loading another MCP server's tool. 2.1.331 Code Mode search shows more of each tool's description, including limits, formats and defaults.",
     },
     grok: {
       status: "yes",
@@ -398,9 +398,9 @@ export const status = {
     },
     cursor: {
       status: "yes",
-      evidenceUrl: "https://cursor.com/help/customization/mcp",
+      evidenceUrl: "https://cursor.com/docs/release-notes/ide",
       notes:
-        "Customize > MCPs toggles a server. Click a tool name in the chat tools list to turn it off. CLI: agent mcp enable|disable and permissions.deny Mcp(server:tool). Team admins can limit a URL server's tools from its detail dialog (Oct 5).",
+        "Customize > MCPs toggles a server. Click a tool name in the chat tools list to turn it off. CLI: agent mcp enable|disable and permissions.deny Mcp(server:tool). Team admins can limit a URL server's tools from its detail dialog. IDE 3.30 team allowlist URL rules match scheme, host, port and path, including wildcards and hosts with a trailing dot. Verified 2026-11-24.",
     },
     "claude-code": {
       status: "yes",
@@ -423,9 +423,9 @@ export const status = {
     },
     "factory-droid": {
       status: "yes",
-      evidenceUrl: "https://docs.factory.com/harness/mcp",
+      evidenceUrl: "https://docs.factory.com/changelog/release-notes",
       notes:
-        "disabled: true or /mcp toggles a server without removing it. enabledTools allow list, disabledTools deny list.",
+        "disabled: true or /mcp toggles a server without removing it. enabledTools allow list, disabledTools deny list. 1.17 lets admins add MCP servers for a user group on top of the organization allowlist.",
     },
   },
   "list-pagination": {
@@ -477,9 +477,9 @@ export const status = {
     },
     cursor: {
       status: "yes",
-      evidenceUrl: "https://cursor.com/docs/mcp",
+      evidenceUrl: "https://cursor.com/docs/release-notes/ide",
       notes:
-        "Support table lists Apps. Official extension matrix marks Cursor. CLI rendering not documented.",
+        "Interactive Apps render in agent chat. IDE 3.30 lets an app call tools on its own server without a server/tool approval prompt; tools hidden from apps remain unavailable. CLI rendering not documented. Verified 2026-11-24.",
     },
     "claude-code": {
       status: "no",
@@ -521,10 +521,10 @@ export const status = {
         "Support table is Tools, Prompts, Resources, Roots, Elicitation, Apps. Skills load from .cursor/skills, .agents/skills, and plugins. No skills/list or io.modelcontextprotocol/skills.",
     },
     "claude-code": {
-      status: "no",
-      evidenceUrl: "https://code.claude.com/docs/en/skills",
+      status: "partial",
+      evidenceUrl: "https://code.claude.com/docs/en/mcp#use-skills-from-mcp-servers",
       notes:
-        "Skills load from the filesystem and plugins. MCP resources are attachments, not a skills catalog. SEP-2640 notes an internal prototype that is not public.",
+        "Public beta in 2.1.331: live MCP skills appear as /<server>:<skill> in supported terminal and local Desktop sessions. Requires a supported model, direct Anthropic access and feature-flag fetching. Pro/Max/Ultra login is on; Team/Enterprise needs admin enablement. VS Code and API/Console access are rolling out. Cloud sessions, headless runs, Agent SDK and cloud providers are unsupported. Filesystem and plugin skills remain available. Verified 2026-11-24.",
     },
     grok: {
       status: "no",
@@ -581,7 +581,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://docs.factory.com/changelog/release-notes",
       notes:
-        "Remote servers sign in from /mcp in a browser. droid mcp auth signs in to enabled, policy-allowed HTTP/SSE servers that need authentication, one at a time. Uses CIMD when supported or DCR. Pre-registered oauth.clientId/clientSecret require authorizationServerIssuer. Tokens in the system keyring or a fallback file. Adding a server from a session on another computer signs in through your browser (1.3.0). 1.16.0 makes authorization links clickable in MCP views and command output.",
+        "Remote servers sign in from /mcp in a browser. droid mcp auth signs in to enabled, policy-allowed HTTP/SSE servers that need authentication, one at a time. Uses CIMD when supported or DCR. Pre-registered oauth.clientId/clientSecret require authorizationServerIssuer. Tokens in the system keyring or a fallback file. Adding a server from a session on another computer signs in through your browser (1.3.0). 1.16.0 makes authorization links clickable in MCP views and command output. 1.19.0 adds a per-server option to skip forced consent when it blocks sign-in.",
     },
   },
   approvals: {
@@ -681,9 +681,82 @@ export const timeline = [
     title: "SEP-3415 Final; Events extension in Beta",
     href: "https://modelcontextprotocol.io/extensions/events/overview",
   },
+  {
+    date: "2026-11-23",
+    title: "OpenCode 2.4 defaults to stateless negotiation and event automations",
+    href: "https://github.com/anomalyco/opencode/releases/tag/v2.4.0",
+  },
+  {
+    date: "2026-11-24",
+    title: "Claude Code documents Skills over MCP in public beta",
+    href: "https://code.claude.com/docs/en/mcp#use-skills-from-mcp-servers",
+  },
 ] satisfies readonly TimelineEvent[];
 
 export const news = [
+  {
+    slug: "claude-code-live-mcp-skills",
+    title: "Claude Code documents live MCP skills in public beta",
+    publishedAt: "2026-11-24",
+    sourceName: "Claude Code docs",
+    sourceUrl: "https://code.claude.com/docs/en/mcp#use-skills-from-mcp-servers",
+    summary:
+      "Verified 2026-11-24: Claude Code 2.1.331 can load skills from connected MCP servers and expose them as /<server>:<skill>. Supported terminal and local Desktop sessions need a supported model, direct Anthropic access and feature-flag fetching. Pro, Max and Ultra logins have access; Team and Enterprise require admin enablement. VS Code and API/Console access are rolling out. Cloud, headless, Agent SDK and cloud-provider sessions are excluded, so Skills over MCP moves from No to Partial.",
+  },
+  {
+    slug: "claude-code-mcp-tasks-more-surfaces",
+    title: "Claude Code documents MCP tasks in subagents, VS Code and Desktop",
+    publishedAt: "2026-11-24",
+    sourceName: "Claude Code docs",
+    sourceUrl: "https://code.claude.com/docs/en/mcp#mcp-tasks-that-run-on-the-server",
+    summary:
+      "Verified 2026-11-24: version 2.1.331 supports tasks in eligible non-fork subagents and VS Code/local Desktop sessions with feature-flag fetching. Those apps cannot display task questions and cancel unless an Elicitation hook accepts. Desktop connectors and servers from claude_desktop_config.json are excluded. Anthropic-hosted cloud sessions support eligible claude.ai connectors, with separate restrictions on scheduled work and project/plugin servers. Tasks stays Partial.",
+  },
+  {
+    slug: "factory-droid-mcp-consent-option",
+    title: "Factory Droid 1.19 adds an MCP sign-in consent option",
+    publishedAt: "2026-11-24",
+    sourceName: "Factory release notes",
+    sourceUrl: "https://docs.factory.com/changelog/release-notes",
+    summary:
+      "An MCP server can now be configured to skip the forced consent step when it blocks sign-in. This extends the existing OAuth flow; OAuth stays Yes.",
+  },
+  {
+    slug: "opencode-default-stateless-and-events",
+    title: "OpenCode 2.4 defaults to stateless MCP and event automations",
+    publishedAt: "2026-11-23",
+    sourceName: "OpenCode release notes",
+    sourceUrl: "https://github.com/anomalyco/opencode/releases/tag/v2.4.0",
+    summary:
+      "Local and remote servers now try 2026-07-28 before falling back to the legacy handshake, moving stateless support to Yes. Events push delivery follows the Beta extension with argument checks, heartbeats and reconnects. Event-triggered automations run prompts, Code Mode or shell commands by default; automations: false disables them. The mcp_events flag is removed, but the tagged client API still labels Events experimental, so push events stays Partial.",
+  },
+  {
+    slug: "claude-code-cloud-provider-code-mode",
+    title: "Claude Code 2.1.331 brings Code Mode to cloud providers",
+    publishedAt: "2026-11-23",
+    sourceName: "Claude Code release notes",
+    sourceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.331",
+    summary:
+      "Interactive terminal Code Mode now supports Amazon Bedrock, Google Agent Platform, Microsoft Foundry and Claude Platform on AWS. It remains experimental and opt-in, with model, account and gateway restrictions. MCP tool search in Code Mode includes more of each tool's description. The release also fixes MCP calls hanging for up to 30 minutes on malformed replies from local or WebSocket servers.",
+  },
+  {
+    slug: "codex-lazy-stdio-startup",
+    title: "Codex 0.172 starts cached stdio MCP servers on first use",
+    publishedAt: "2026-11-23",
+    sourceName: "Codex release notes",
+    sourceUrl: "https://github.com/openai/codex/releases/tag/rust-v0.172.0",
+    summary:
+      "Optional stdio MCP servers with a usable cached tool list now start on their first tool call by default. This delays starting the server process; deferred tool descriptions were already supported. The TUI also completes supported slash-command arguments, such as /mcp lo to /mcp login.",
+  },
+  {
+    slug: "factory-droid-group-mcp-allowlists",
+    title: "Factory Droid 1.17 adds group-specific MCP allowlist entries",
+    publishedAt: "2026-11-21",
+    sourceName: "Factory release notes",
+    sourceUrl: "https://docs.factory.com/changelog/release-notes",
+    summary:
+      "Admins can add MCP servers for a user group on top of the organization allowlist. Per-tool filtering stays Yes. Live MCP health now stays in the footer while the startup header shows counts.",
+  },
   {
     slug: "claude-code-mcp-background-handoff",
     title: "Claude Code 2.1.330 keeps MCP tasks running across background handoffs",
@@ -709,7 +782,7 @@ export const news = [
     sourceName: "MCP",
     sourceUrl: "https://modelcontextprotocol.io/extensions/events/overview",
     summary:
-      "SEP-3415 reached Final on November 19. The official io.modelcontextprotocol/events extension is Beta and defines event discovery plus poll, push, and webhook delivery, with cursors for resumption. OpenCode's experimental event watches predate finalization; the board keeps them Partial. Claude Code Channels remain a separate client capability.",
+      "SEP-3415 reached Final on November 19. The official io.modelcontextprotocol/events extension is Beta and defines event discovery plus poll, push, and webhook delivery, with cursors for resumption. OpenCode's initial experimental event watches predated finalization. Claude Code Channels remain a separate client capability.",
   },
   {
     slug: "claude-code-mcp-reconnect-and-code-mode",
@@ -736,7 +809,7 @@ export const news = [
     sourceName: "OpenCode release notes",
     sourceUrl: "https://github.com/anomalyco/opencode/releases/tag/v2.3.1",
     summary:
-      "Experimental automations can react to a pushed MCP event by sending a prompt to a session or a new subagent, or by running Code Mode that decides whether to send one. Event watches require both automations and mcp_events; support stays Partial. Code Mode catalog tool summaries also grow from 120 to 500 characters, and search accepts a string as shorthand.",
+      "Experimental automations can react to a pushed MCP event by sending a prompt to a session or a new subagent, or by running Code Mode that decides whether to send one. In 2.3.1, event watches require both automations and mcp_events. Code Mode catalog tool summaries also grow from 120 to 500 characters, and search accepts a string as shorthand.",
   },
   {
     slug: "codex-mcp-oauth-races",
@@ -912,7 +985,7 @@ export const news = [
     sourceName: "MCP docs",
     sourceUrl: "https://modelcontextprotocol.io/development/roadmap",
     summary:
-      "The 22 Aug 2026 cycle lists Tasks plus server-initiated events, HTTP-over-stdio, DPoP and agent identity, and protocol-level progressive discovery. Those are SEPs. Claude Code runs Tasks in public beta since 28 Oct, and OpenCode 2.3 has experimental server-initiated events behind a flag; no client on this board implements HTTP-over-stdio, DPoP, or progressive discovery.",
+      "The 22 Aug 2026 cycle lists Tasks plus server-initiated events, HTTP-over-stdio, DPoP and agent identity, and protocol-level progressive discovery. Those are SEPs. Claude Code runs Tasks in public beta since 28 Oct, and OpenCode 2.3 introduced experimental server-initiated events behind a flag; no client on this board implements HTTP-over-stdio, DPoP, or progressive discovery.",
   },
   {
     slug: "mcp-spec-2026-07-28",
@@ -940,7 +1013,7 @@ export const news = [
     sourceUrl:
       "https://modelcontextprotocol.io/community/working-groups/skills-over-mcp",
     summary:
-      "The Skills Over MCP working group is drafting SEP-2640: SKILL.md directories over skill://, listed with skills/list. OpenAI's plugin Scan Tools imports a bounded snapshot. The five coding agents on this board still load skills from disk.",
+      "The Skills Over MCP working group is drafting SEP-2640: SKILL.md directories over skill://, listed with skills/list. OpenAI's plugin Scan Tools imports a bounded snapshot.",
   },
   {
     slug: "claude-code-tool-search",
