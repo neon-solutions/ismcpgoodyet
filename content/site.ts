@@ -12,7 +12,7 @@ export const clients = [
   {
     id: "codex",
     name: "Codex",
-    docsUrl: "https://developers.openai.com/codex/mcp",
+    docsUrl: "https://learn.chatgpt.com/docs/extend/mcp?surface=cli",
   },
   {
     id: "cursor",
@@ -263,7 +263,7 @@ export const status = {
       evidenceUrl:
         "https://github.com/anomalyco/opencode/releases/tag/v2.4.0",
       notes:
-        "2.4 ships Events Beta push delivery on 2026-07-28 with argument checks, heartbeats and reconnects. Event-triggered automations can send a prompt or run Code Mode or a shell command. mcp_events is removed; automations are on by default and automations: false disables watches. Poll and webhook delivery are absent. The tagged client API still labels Events experimental, so support stays Partial.",
+        "2.4 ships Events Beta push delivery on 2026-07-28 with argument checks, heartbeats and reconnects. Event-triggered automations can send a prompt or run Code Mode or a shell command. mcp_events is removed; automations are on by default and automations: false disables watches. 2.4.2 keeps automations running after a failed run. Poll and webhook delivery are absent. The 2.4.2 client API still labels Events experimental, so support stays Partial.",
     },
     "factory-droid": {
       status: "no",
@@ -275,7 +275,7 @@ export const status = {
   tasks: {
     codex: {
       status: "no",
-      evidenceUrl: "https://developers.openai.com/codex/mcp",
+      evidenceUrl: "https://learn.chatgpt.com/docs/extend/mcp?surface=cli",
       notes:
         "Codex MCP docs cover stdio, Streamable HTTP, tools, OAuth, and approval_mode. No Tasks extension, tasks/get, or io.modelcontextprotocol/tasks.",
     },
@@ -289,7 +289,7 @@ export const status = {
       status: "partial",
       evidenceUrl: "https://code.claude.com/docs/en/mcp#mcp-tasks-that-run-on-the-server",
       notes:
-        "CLI since 2.1.304: polls tasks/get, answers input_required through tasks/update and cancels with tasks/cancel. Interactive terminals also work without feature-flag fetching on cloud providers and gateways. Esc defers a question; Enter in /tasks reopens it. HTTP reconnect and background handoff recovery exclude some servers. 2.1.331 adds eligible non-fork subagents and VS Code/local Desktop sessions with feature-flag fetching. Those apps cannot show task questions; an accepting Elicitation hook is needed to avoid cancellation. Desktop connectors and claude_desktop_config.json servers get no tasks. Cloud sessions support eligible claude.ai connectors, not project/plugin servers or cloud scheduled tasks. tasks/list and task notifications remain unused. Verified 2026-11-24.",
+        "CLI since 2.1.304: polls tasks/get, answers input_required through tasks/update and cancels with tasks/cancel. Interactive terminals also work without feature-flag fetching on cloud providers and gateways. Esc defers a question; Enter in /tasks reopens it. HTTP reconnect and background handoff recovery exclude some servers. 2.1.331 adds eligible non-fork subagents and VS Code/local Desktop sessions with feature-flag fetching. Those apps cannot show task questions; an accepting Elicitation hook is needed to avoid cancellation. Desktop connectors and claude_desktop_config.json servers get no tasks. Cloud sessions support eligible claude.ai connectors, not project/plugin servers or cloud scheduled tasks. 2.1.332 accepts server task IDs up to 1,024 characters instead of failing above 128. tasks/list and task notifications remain unused. Verified 2026-11-27.",
     },
     grok: {
       status: "no",
@@ -365,9 +365,9 @@ export const status = {
     },
     "claude-code": {
       status: "yes",
-      evidenceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.331",
+      evidenceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.332",
       notes:
-        "Tool Search is on by default. Definitions are withheld; the agent gets a summary and loads up to five matches. alwaysLoad keeps a tool in the prompt; alwaysLoad: false on a server defers all its tools (2.1.287). Azure-hosted Foundry and unsupported models load upfront. Gateways default to search since 2.1.304, with fallback if they reject it. 2.1.325 raises tool-search descriptions in new cloud sessions from 4,096 to 16,384 characters, matching other sessions. 2.1.326 fixes exact-name searches loading another MCP server's tool. 2.1.331 Code Mode search shows more of each tool's description, including limits, formats and defaults.",
+        "Tool Search is on by default. Definitions are withheld; the agent gets a summary and loads up to five matches. alwaysLoad keeps a tool in the prompt; alwaysLoad: false on a server defers all its tools (2.1.287). Azure-hosted Foundry and unsupported models load upfront. Gateways default to search since 2.1.304, with fallback if they reject it. 2.1.325 raises tool-search descriptions in new cloud sessions from 4,096 to 16,384 characters, matching other sessions. 2.1.326 fixes exact-name searches loading another MCP server's tool. 2.1.331 Code Mode search shows more of each tool's description, including limits, formats and defaults; 2.1.332 shows long MCP descriptions whole where they fit.",
     },
     grok: {
       status: "yes",
@@ -393,14 +393,14 @@ export const status = {
   "tool-filter": {
     codex: {
       status: "yes",
-      evidenceUrl: "https://developers.openai.com/codex/mcp",
+      evidenceUrl: "https://learn.chatgpt.com/docs/extend/mcp?surface=cli",
       notes: "enabled=false disables a server. enabled_tools allow list, disabled_tools deny list.",
     },
     cursor: {
       status: "yes",
       evidenceUrl: "https://cursor.com/docs/release-notes/ide",
       notes:
-        "Customize > MCPs toggles a server. Click a tool name in the chat tools list to turn it off. CLI: agent mcp enable|disable and permissions.deny Mcp(server:tool). Team admins can limit a URL server's tools from its detail dialog. IDE 3.30 team allowlist URL rules match scheme, host, port and path, including wildcards and hosts with a trailing dot. Verified 2026-11-24.",
+        "Customize > MCPs toggles a server. Click a tool name in the chat tools list to turn it off. CLI: agent mcp enable|disable and permissions.deny Mcp(server:tool). Team admins can limit a URL server's tools from its detail dialog. IDE 3.30 team allowlist URL rules match scheme, host, port and path, including wildcards and hosts with a trailing dot. IDE 3.31 (Nov 20) shows per-surface admin limits on each server and tool, and a team deny rule for a URL also blocks the same endpoint with a query string, extra slashes, or the other of http and https. Verified 2026-11-27.",
     },
     "claude-code": {
       status: "yes",
@@ -419,7 +419,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers",
       notes:
-        "disabled: true keeps a server configured without connecting it. Permission rules can deny a prefixed MCP tool id. Managed policy mcp.use controls which MCP servers can be used (2.2.3).",
+        "disabled: true keeps a server configured without connecting it. Permission rules can deny a prefixed MCP tool id. Managed policy mcp.use controls which MCP servers can be used (2.2.3). 2.4.2 fixes denied tools staying visible when a blanket deny is followed by narrower denies.",
     },
     "factory-droid": {
       status: "yes",
@@ -524,7 +524,7 @@ export const status = {
       status: "partial",
       evidenceUrl: "https://code.claude.com/docs/en/mcp#use-skills-from-mcp-servers",
       notes:
-        "Public beta in 2.1.331: live MCP skills appear as /<server>:<skill> in supported terminal and local Desktop sessions. Requires a supported model, direct Anthropic access and feature-flag fetching. Pro/Max/Ultra login is on; Team/Enterprise needs admin enablement. VS Code and API/Console access are rolling out. Cloud sessions, headless runs, Agent SDK and cloud providers are unsupported. Filesystem and plugin skills remain available. Verified 2026-11-24.",
+        "Public beta since 2.1.331; the 2.1.332 release notes list MCP skills as server:skill in the / menu. Works in terminals (including JetBrains) and local Desktop sessions with servers on 2026-07-28. Requires a supported model, direct Anthropic access and feature-flag fetching. Pro/Max/Ultra login and long-lived tokens are on; Team/Enterprise login needs admin enablement. VS Code and API key/Console access are rolling out. Cloud sessions, headless runs, Agent SDK and cloud providers are unsupported. Filesystem and plugin skills remain available. Verified 2026-11-27.",
     },
     grok: {
       status: "no",
@@ -533,10 +533,11 @@ export const status = {
         "MCP docs cover tools, OAuth, and approvals. No skills/list, skill://, or io.modelcontextprotocol/skills. docs.x.ai/build/features/skills is 404.",
     },
     opencode: {
-      status: "no",
-      evidenceUrl: "https://opencode.ai/v2/docs/skills",
+      status: "partial",
+      evidenceUrl:
+        "https://github.com/anomalyco/opencode/blob/v2.4.2/packages/schema/src/config/flag.ts",
       notes:
-        "Skills load from .opencode/skills on disk. No skills/list or io.modelcontextprotocol/skills in the 2.2 MCP client.",
+        "2.4.2 loads skills from servers that offer io.modelcontextprotocol/skills as <server>:<skill>, behind the experimental mcp_skills flag. Flags are off in releases; opt in with experimental.mcp_skills: true or OPENCODE_FLAGS=mcp_skills. A server that offers skills no longer has its instructions included. Not in the release notes or skills docs. Skills from .opencode/skills on disk remain.",
     },
     "factory-droid": {
       status: "no",
@@ -556,7 +557,7 @@ export const status = {
       status: "yes",
       evidenceUrl: "https://cursor.com/docs/mcp",
       notes:
-        "Marketplace Add to Cursor runs OAuth. Static CLIENT_ID/SECRET in mcp.json. CLI: agent mcp login. Cloud OAuth is per user on Cursor's backend. Servers that reject local redirect URLs sign in through a Cursor-hosted callback page (Oct 9). Cloud Agents show a sign-in card for missing permissions named by the server mid-call, and keep the granted scopes for later sign-ins (Oct 19).",
+        "Marketplace Add to Cursor runs OAuth. Static CLIENT_ID/SECRET in mcp.json. CLI: agent mcp login. Cloud OAuth is per user on Cursor's backend. Servers that reject local redirect URLs sign in through a Cursor-hosted callback page (Oct 9). Cloud Agents show a sign-in card for missing permissions named by the server mid-call, and keep the granted scopes for later sign-ins (Oct 19). IDE 3.31 (Nov 20) signs in when the default local callback port is in use.",
     },
     "claude-code": {
       status: "yes",
@@ -573,23 +574,23 @@ export const status = {
     },
     opencode: {
       status: "yes",
-      evidenceUrl: "https://opencode.ai/v2/docs/mcp-servers#client-registration",
+      evidenceUrl: "https://github.com/anomalyco/opencode/releases/tag/v2.4.2",
       notes:
-        "Automatic for remote servers. Uses a pre-registered client, then CIMD, then DCR (2.2). opencode mcp auth / list / logout. 2.2.7 keeps rotating-token logins across concurrent refreshes and temporary token-endpoint failures. 2.3.0 fixes refreshes and localhost redirects when a server rewrites 127.0.0.1.",
+        "Automatic for remote servers. Uses a pre-registered client, then CIMD, then DCR (2.2). opencode mcp auth / list / logout. 2.2.7 keeps rotating-token logins across concurrent refreshes and temporary token-endpoint failures. 2.3.0 fixes refreshes and localhost redirects when a server rewrites 127.0.0.1. 2.4.2 fixes sign-in to servers whose URL has a query string, such as the AWS MCP Server.",
     },
     "factory-droid": {
       status: "yes",
       evidenceUrl: "https://docs.factory.com/changelog/release-notes",
       notes:
-        "Remote servers sign in from /mcp in a browser. droid mcp auth signs in to enabled, policy-allowed HTTP/SSE servers that need authentication, one at a time. Uses CIMD when supported or DCR. Pre-registered oauth.clientId/clientSecret require authorizationServerIssuer. Tokens in the system keyring or a fallback file. Adding a server from a session on another computer signs in through your browser (1.3.0). 1.16.0 makes authorization links clickable in MCP views and command output. 1.19.0 adds a per-server option to skip forced consent when it blocks sign-in.",
+        "Remote servers sign in from /mcp in a browser. droid mcp auth signs in to enabled, policy-allowed HTTP/SSE servers that need authentication, one at a time. Uses CIMD when supported or DCR. Pre-registered oauth.clientId/clientSecret require authorizationServerIssuer. Tokens in the system keyring or a fallback file. Adding a server from a session on another computer signs in through your browser (1.3.0). 1.16.0 makes authorization links clickable in MCP views and command output. 1.19.0 adds a per-server option to skip forced consent when it blocks sign-in. 1.21.0 lets a server use a localhost sign-in callback instead of a loopback address.",
     },
   },
   approvals: {
     codex: {
       status: "yes",
-      evidenceUrl: "https://developers.openai.com/codex/mcp",
+      evidenceUrl: "https://learn.chatgpt.com/docs/extend/mcp?surface=cli",
       notes:
-        "approval_mode auto, prompt, writes, approve. writes prompts when the tool is not read-only. readOnlyHint can skip approval; since 0.169.0 it takes precedence over destructiveHint and openWorldHint in automatic approval (PR 60638).",
+        "default_tools_approval_mode per server and tools.<tool>.approval_mode per tool: auto, prompt, writes, approve. writes prompts when the tool is not read-only. readOnlyHint can skip approval; since 0.169.0 it takes precedence over destructiveHint and openWorldHint in automatic approval (PR 60638).",
     },
     cursor: {
       status: "yes",
@@ -694,6 +695,43 @@ export const timeline = [
 ] satisfies readonly TimelineEvent[];
 
 export const news = [
+  {
+    slug: "opencode-experimental-mcp-skills",
+    title: "OpenCode 2.4.2 ships experimental skills from MCP servers",
+    publishedAt: "2026-11-25",
+    sourceName: "OpenCode source",
+    sourceUrl:
+      "https://github.com/anomalyco/opencode/blob/v2.4.2/packages/schema/src/config/flag.ts",
+    summary:
+      "The 2.4.2 release adds an mcp_skills flag that loads skills from servers offering io.modelcontextprotocol/skills, named <server>:<skill>. It is off in releases until you set experimental.mcp_skills: true or OPENCODE_FLAGS=mcp_skills, and the release notes and skills docs do not mention it, so Skills over MCP moves from No to Partial. The release also fixes MCP sign-in for server URLs with a query string and denied tools staying visible after a blanket deny followed by narrower denies, and keeps automations running after a failed run.",
+  },
+  {
+    slug: "factory-droid-mcp-reconnect-localhost-callback",
+    title: "Factory Droid 1.20 and 1.21 reopen dropped MCP connections",
+    publishedAt: "2026-11-25",
+    sourceName: "Factory release notes",
+    sourceUrl: "https://docs.factory.com/changelog/release-notes",
+    summary:
+      "Droid 1.20 reopens a dropped MCP connection instead of failing every later tool call. Droid 1.21 lets an MCP server use a localhost sign-in callback instead of a loopback address. OAuth stays Yes.",
+  },
+  {
+    slug: "claude-code-mcp-skills-menu-sse-fix",
+    title: "Claude Code 2.1.332 lists MCP skills and fixes SSE reconnects",
+    publishedAt: "2026-11-24",
+    sourceName: "Claude Code release notes",
+    sourceUrl: "https://github.com/anthropics/claude-code/releases/tag/v2.1.332",
+    summary:
+      "The release notes list MCP skills, in beta since 2.1.331, as server:skill in the / menu. SSE servers no longer hang or refuse every tool call after their event stream drops and returns on a new endpoint. MCP task IDs up to 1,024 characters work, the terminal no longer freezes while a local server floods its standard output, and Code Mode tool search shows long MCP descriptions whole where they fit. Statuses stay unchanged.",
+  },
+  {
+    slug: "cursor-ide-mcp-admin-limits",
+    title: "Cursor IDE 3.31 shows where admins limit MCP servers and tools",
+    publishedAt: "2026-11-20",
+    sourceName: "Cursor IDE release notes",
+    sourceUrl: "https://cursor.com/docs/release-notes/ide",
+    summary:
+      "Customize shows per-surface admin limits such as Local: Read-Only or Cloud: Blocked, and a team deny rule for a server URL also blocks the same endpoint with a query string, extra slashes, or the other of http and https. A broken mcp.json gets a row with the error and line number. MCP sign-in works when the default local callback port is in use, servers no longer show no tools after a failed listing, and blocked servers stop running.",
+  },
   {
     slug: "claude-code-live-mcp-skills",
     title: "Claude Code documents live MCP skills in public beta",
